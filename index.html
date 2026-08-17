@@ -1,0 +1,1383 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Impromptu</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Patrick+Hand&family=Kalam:wght@400;700&family=DM+Mono:wght@400;500&display=swap');
+
+:root{
+  --paper:#FBF7EE; --line:#DDD3BE; --ink:#2E2A22; --ink-2:#6B6355; --ink-3:#9C9482;
+  --card:#FFFDF6; --red:#C4432E; --red-soft:#F6DCD3; --green:#3E7D5A; --green-soft:#DCEBE0;
+  --blue:#3C5C8F; --blue-soft:#DEE7F3; --yellow:#E0A526; --yellow-soft:#FBEACB; --tape:#F1E4A8;
+  --display:'Caveat',cursive; --hand:'Patrick Hand',cursive; --body:'Kalam',cursive;
+  --mono:'DM Mono',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px);
+  background-size:100% 34px;
+  background-attachment:local;
+}
+button{font-family:var(--hand);cursor:pointer}
+:focus-visible{outline:2.5px solid var(--blue);outline-offset:3px;border-radius:8px}
+.wrap{max-width:880px;margin:0 auto;padding:0 20px 100px}
+
+/* nav */
+.topnav{position:sticky;top:0;z-index:50;background:rgba(251,247,238,.95);backdrop-filter:blur(6px);
+  border-bottom:2.5px solid var(--ink);padding:14px 0 10px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-weight:700;font-size:30px;display:flex;align-items:center;gap:8px;transform:rotate(-1deg)}
+.brand .pin{width:11px;height:11px;border-radius:50%;background:var(--red);box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.tabs2{display:flex;gap:6px;flex-wrap:wrap}
+.tabbtn{font-family:var(--hand);font-size:16px;background:transparent;border:2px solid transparent;border-radius:10px;padding:7px 14px;color:var(--ink-2)}
+.tabbtn.active{background:var(--card);border-color:var(--ink);color:var(--ink);transform:rotate(-.6deg)}
+.tabbtn:hover:not(.active){color:var(--ink)}
+.streakbadge{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+
+.page{display:none;padding:38px 0}
+.page.on{display:block;animation:rise .4s ease}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,6vw,54px);line-height:1.05;margin:0 0 6px;transform:rotate(-.4deg)}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,4.4vw,36px);margin:0 0 10px}
+h3{font-family:var(--hand);font-size:21px;margin:0 0 8px}
+p.lede{color:var(--ink-2);max-width:58ch;margin:0 0 20px}
+.muted{color:var(--ink-3);font-size:14px}
+.squiggle{width:120px;height:10px;margin:2px 0 20px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='10' viewBox='0 0 40 10'%3E%3Cpath d='M0 5 Q5 0 10 5 T20 5 T30 5 T40 5' stroke='%23C4432E' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:repeat-x;background-size:40px 10px}
+
+/* cards */
+.card{background:var(--card);border:2.5px solid var(--ink);border-radius:14px 18px 14px 20px/18px 14px 20px 14px;padding:20px;position:relative;box-shadow:3px 4px 0 rgba(46,42,34,.08)}
+.note{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:16px 18px;position:relative}
+.tapeH{position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-2deg);width:64px;height:22px;background:var(--tape);opacity:.85;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+
+.btn{font-family:var(--hand);font-weight:400;font-size:18px;background:var(--ink);color:var(--paper);border:2px solid var(--ink);
+  padding:11px 22px;border-radius:225px 15px 225px 15px/15px 225px 15px 225px;transition:transform .12s}
+.btn:hover{transform:rotate(-1deg) translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn.gold{background:var(--red);border-color:var(--red);color:#fff}
+.btn.gold:hover{background:#AD3722}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:rgba(46,42,34,.06)}
+.btn.small{font-size:15px;padding:7px 16px}
+.pill{font-family:var(--mono);font-size:11px;letter-spacing:.04em;border:1.5px dashed var(--ink-3);border-radius:999px;padding:4px 11px;color:var(--ink-2);background:var(--card)}
+.pill.gold{background:var(--yellow-soft);border-color:#D9B45C;color:#7A5A0A}
+
+.opts{display:grid;gap:9px;margin:0 0 24px}
+.grid2{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--card);
+  border:2px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15.5px;color:var(--ink);transition:border-color .15s,transform .1s}
+.opt:hover{border-color:var(--ink-2)}
+.opt[aria-pressed="true"]{border-color:var(--ink);background:var(--blue-soft);transform:rotate(-.4deg)}
+.opt .tick{width:17px;height:17px;border:2px solid var(--line);border-radius:50%;flex:none;margin-top:3px;position:relative}
+.opt[aria-pressed="true"] .tick{border-color:var(--ink);background:var(--red)}
+.opt[aria-pressed="true"] .tick:after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--ink)}
+.opt strong{font-family:var(--hand);font-size:17.5px;display:block}
+.opt span.d{color:var(--ink-2);font-size:13px;display:block}
+
+/* reel */
+.reelbox{position:relative;height:120px;overflow:hidden;border-radius:14px;background:var(--ink);color:var(--paper);border:2.5px solid var(--ink);transform:rotate(-.3deg)}
+.reelbox:before,.reelbox:after{content:"";position:absolute;left:0;right:0;height:26px;z-index:2;pointer-events:none}
+.reelbox:before{top:0;background:linear-gradient(var(--ink),rgba(46,42,34,0))}
+.reelbox:after{bottom:0;background:linear-gradient(rgba(46,42,34,0),var(--ink))}
+.reel .slot{height:120px;display:flex;align-items:center;justify-content:center;text-align:center;padding:14px 22px;
+  font-family:var(--hand);font-size:clamp(17px,2.5vw,22px);line-height:1.3}
+.reel .slot.dim{opacity:.3}
+
+/* dial */
+.dialwrap{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center}
+@media(max-width:600px){.dialwrap{grid-template-columns:1fr;justify-items:center;text-align:center}}
+.dial{position:relative;width:240px;height:240px;touch-action:none;user-select:none}
+.dial svg{display:block}
+.dial .track{fill:none;stroke:var(--line);stroke-width:13}
+.dial .prog{fill:none;stroke:var(--red);stroke-width:13;stroke-linecap:round;transition:stroke .2s}
+.dial .knob{fill:var(--ink);stroke:var(--card);stroke-width:4;cursor:grab}
+.dial.drag .knob{cursor:grabbing}
+.dial .tickm{stroke:var(--line);stroke-width:2}
+.dial .read{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.dial .read .t{font-family:var(--mono);font-size:40px;font-weight:500;line-height:1}
+.dial .read .l{font-family:var(--hand);font-size:13px;color:var(--ink-3);margin-top:6px}
+.dial.running .knob{display:none}
+.dial.over .prog{stroke:#8E2A1B}
+.dial.over .read .t{color:#8E2A1B}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{font-family:var(--hand);font-size:15px;background:var(--card);border:2px solid var(--line);border-radius:999px;padding:7px 14px;color:var(--ink-2)}
+.tab[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+.livegrid{display:grid;grid-template-columns:1fr 230px;gap:16px;margin-top:22px}
+@media(max-width:760px){.livegrid{grid-template-columns:1fr}}
+.transcript{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:16px 18px;
+  min-height:170px;max-height:300px;overflow:auto;font-size:17px;line-height:1.7}
+.transcript .interim{color:var(--ink-3)}
+.transcript .f{background:var(--yellow-soft);border-bottom:2px solid var(--yellow);border-radius:3px;padding:0 2px}
+.transcript .empty{color:var(--ink-3);font-size:15px}
+.radar{background:var(--ink);color:var(--paper);border-radius:14px;padding:16px 18px;align-self:start;transform:rotate(.4deg)}
+.radar h4{font-family:var(--hand);font-size:15px;color:#C7BFAE;margin:0 0 10px;font-weight:400}
+.radar .big{font-family:var(--mono);font-size:36px;line-height:1}
+.radar .big.hit{color:var(--yellow)}
+.radar .sub{font-size:13px;color:#B8AF9C;margin-top:3px}
+.radar hr{border:none;border-top:1px dashed #55503F;margin:12px 0}
+.fl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12.5px;padding:2px 0;color:#E9E3D3}
+.fl span:last-child{color:var(--yellow)}
+.countin{position:fixed;inset:0;background:rgba(46,42,34,.97);color:var(--paper);z-index:80;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:24px}
+.countin .n{font-family:var(--display);font-weight:700;font-size:clamp(100px,24vw,180px);line-height:1}
+.countin .t{font-family:var(--hand);font-size:clamp(18px,3vw,25px);max-width:22ch;margin-top:16px}
+.countin .e{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#B8AF9C}
+.rec{display:inline-flex;align-items:center;gap:7px}
+.rec .led{width:9px;height:9px;border-radius:50%;background:var(--red);animation:blink 1.2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+.scorehead{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;margin-bottom:6px}
+@media(max-width:560px){.scorehead{grid-template-columns:1fr}}
+.bigscore{font-family:var(--display);font-weight:700;font-size:82px;line-height:.85;transform:rotate(-2deg)}
+.bigscore em{font-style:normal;font-size:24px;color:var(--ink-3)}
+.assess{background:var(--green-soft);border:2px dashed var(--green);border-radius:14px;padding:18px 20px;margin:20px 0}
+.assess p{margin:0;color:#204633}
+.takeaway{background:var(--ink);color:var(--paper);border-radius:16px;padding:24px 26px;margin:20px 0;position:relative;transform:rotate(-.3deg)}
+.takeaway h2{font-size:clamp(22px,3.6vw,29px);margin:6px 0 10px;color:#fff}
+.takeaway p{color:#D6CFBC;margin:0 0 10px;max-width:60ch}
+.takeaway .try{border-left:3px solid var(--red);padding-left:13px}
+.vocab{background:var(--yellow-soft);border:2px dashed #D9B45C;border-radius:14px;padding:20px 22px;margin-bottom:20px}
+.vocab .word{font-family:var(--display);font-weight:700;font-size:34px}
+.vocab .pos{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
+.swap{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin:14px 0;font-size:15px}
+@media(max-width:520px){.swap{grid-template-columns:1fr}}
+.swap .was{color:var(--ink-2);text-decoration:line-through;text-decoration-color:var(--red)}
+.swap .arr{font-family:var(--hand);color:#7A5A0A;font-size:14px}
+.swap .now{font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:20px 0}
+.stat{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:12px 13px}
+.stat .k{font-family:var(--hand);font-size:12.5px;color:var(--ink-3)}
+.stat .v{font-family:var(--mono);font-size:19px;margin-top:2px}
+.stat .v.flag{color:var(--red)}
+.barrow{border:2px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:10px}
+.barrow .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;font-family:var(--hand);font-size:16px}
+.barrow .top .n{font-family:var(--mono);color:var(--red)}
+.barrow .t{height:8px;background:var(--paper);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-bottom:7px}
+.barrow .v{height:100%;background:var(--green);border-radius:999px;transition:width .8s ease}
+.barrow .note{font-size:13.5px;color:var(--ink-2);margin:0}
+.loadbox{text-align:center;padding:40px 20px}
+.pulse{width:13px;height:13px;border-radius:50%;background:var(--red);margin:0 auto 16px;animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.9);opacity:.35}}
+
+.trend{width:100%;height:130px}
+.trend .ln{fill:none;stroke:var(--green);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.trend .ln.gold{stroke:var(--red)}
+.trend .pt{fill:var(--card);stroke:var(--green);stroke-width:2}
+.trend .grid{stroke:var(--line);stroke-width:1}
+.list{display:grid;gap:8px}
+.list .r{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:11px 14px;font-size:14.5px}
+.hrow{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center}
+.hrow .d{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
+.hrow .sc{font-family:var(--mono);font-weight:500;color:var(--red)}
+.vrow b{font-family:var(--hand);font-size:17px}
+.notice{border-left:3px solid var(--red);background:var(--red-soft);padding:11px 14px;border-radius:0 10px 10px 0;font-size:14px;margin:14px 0}
+textarea{width:100%;min-height:110px;font-family:var(--body);font-size:15px;line-height:1.5;color:var(--ink);
+  background:var(--card);border:2px solid var(--line);border-radius:12px;padding:10px 12px;resize:vertical}
+input[type=text],input[type=password]{width:100%;font-family:var(--body);font-size:15px;color:var(--ink);background:var(--card);
+  border:2px solid var(--line);border-radius:999px;padding:10px 15px}
+audio{width:100%;margin-top:10px}
+
+/* guide */
+.guidecard{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+.guidecard h4{font-family:var(--display);font-weight:700;font-size:23px;margin:0 0 2px;display:flex;align-items:center;gap:8px}
+.guidecard .tag{font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--red);background:var(--red-soft);padding:2px 8px;border-radius:999px}
+.guidecard .steps{display:grid;gap:5px;margin-top:8px}
+.guidecard .steps div{font-size:14.5px;color:var(--ink-2);padding-left:20px;position:relative}
+.guidecard .steps div:before{content:"↳";position:absolute;left:0;color:var(--green)}
+.guidecard p.ex{background:var(--paper);border:1px dashed var(--line);border-radius:8px;padding:9px 12px;font-size:13.5px;color:var(--ink-2);margin:9px 0 0;font-style:italic}
+
+/* ask a coach */
+.askbox{background:var(--card);border:2px dashed var(--ink-3);border-radius:14px;padding:18px}
+.askthread{display:grid;gap:9px;margin-bottom:12px;max-height:280px;overflow:auto}
+.askthread:empty{display:none}
+.qa{border-radius:12px;padding:10px 14px;font-size:14.5px}
+.qa.q{background:var(--blue-soft);color:#22375A}
+.qa.a{background:var(--green-soft);color:#204633}
+.qa .who{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;opacity:.6;display:block;margin-bottom:3px}
+.askrow{display:flex;gap:8px}
+.askrow input{flex:1}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.chip{font-family:var(--mono);font-size:11.5px;background:var(--paper);border:1.5px dashed var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2)}
+.chip:hover{border-color:var(--ink)}
+.keybox{background:var(--yellow-soft);border:2px dashed #D9B45C;border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:14px;color:#5C4300}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
+</style>
+
+<div class="wrap">
+
+<div class="topnav">
+  <div class="brand"><span class="pin"></span>Daily Impromptu</div>
+  <div class="tabs2" id="tabs"></div>
+  <div class="streakbadge" id="streakbadge"></div>
+</div>
+
+<!-- ============ SETUP ============ -->
+<section class="page on" id="p-setup">
+  <h1>Let's set this up 🖊️</h1>
+  <div class="squiggle"></div>
+  <p class="lede">Pick your level and the subjects you want topics from. After this, every visit opens straight on a topic.</p>
+  <h3>Level</h3>
+  <div class="opts" id="levelOpts"></div>
+  <h3>Subjects</h3>
+  <p class="muted" style="margin:-2px 0 12px">Pick as many as you like.</p>
+  <div class="opts grid2" id="domainOpts"></div>
+  <button class="btn gold" id="setupDone" disabled>Start practising</button>
+</section>
+
+<!-- ============ PRACTICE ============ -->
+<section class="page" id="p-practice">
+
+  <!-- topic step -->
+  <div id="stepTopic">
+    <div class="keybox" id="keyBanner" hidden>
+      <b>Scores say "estimate only" because no API key is saved yet.</b><br>
+      Real coaching, the varied one-thing advice and the word of the day all need it. Go to the <b>Settings</b> tab (top right) → first box, <b>Your Anthropic API key</b> → paste your key → <b>Save key</b>. Get one at console.anthropic.com → API keys. On Haiku this costs a few cents a month.
+      <div style="margin-top:10px"><button class="btn small" id="keyBannerGo">Open Settings</button></div>
+    </div>
+    <h1 id="topicHead">One topic. One minute.</h1>
+    <p class="lede" id="topicLede"></p>
+    <div class="reelbox"><div class="reel" id="reel"><div class="slot">Today's topic is waiting</div></div></div>
+    <div class="row" id="topicMeta" style="margin-top:14px"></div>
+    <div class="row" style="margin-top:18px">
+      <button class="btn gold" id="spinBtn">Spin for today's topic</button>
+      <button class="btn" id="toPrepBtn" hidden>I've thought about it — start prep time</button>
+    </div>
+    <div style="margin-top:30px" id="askTopicSlot"></div>
+  </div>
+
+  <!-- prep step -->
+  <div id="stepPrep" hidden>
+    <h2>Prep time</h2>
+    <div class="note" id="prepTopicCard" style="margin-bottom:22px">
+      <div class="row" style="margin-bottom:8px" id="prepTopicMeta"></div>
+      <h3 style="font-size:22px;margin:0" id="prepTopicText"></h3>
+    </div>
+    <div class="dialwrap">
+      <div class="dial" id="dial" tabindex="0" role="slider" aria-label="Prep time in minutes" aria-valuemin="0.5" aria-valuemax="20" aria-valuenow="2">
+        <svg width="240" height="240" viewBox="0 0 240 240">
+          <g id="dialTicks"></g>
+          <circle class="track" cx="120" cy="120" r="98"></circle>
+          <circle class="prog" cx="120" cy="120" r="98" transform="rotate(-90 120 120)"></circle>
+          <circle class="knob" id="knob" cx="120" cy="22" r="14"></circle>
+        </svg>
+        <div class="read"><span class="t" id="dialRead">2:00</span><span class="l" id="dialLabel">drag to set</span></div>
+      </div>
+      <div>
+        <div class="tabs" id="prepTabs"></div>
+        <div class="row">
+          <button class="btn gold" id="startPrep">Start</button>
+          <button class="btn ghost" id="skipPrep">Skip</button>
+        </div>
+        <div class="row" style="margin-top:16px" id="prepRunRow" hidden>
+          <button class="btn" id="readyNow">I'm ready — speak now</button>
+        </div>
+        <div id="micStatus" style="margin-top:18px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- speak step -->
+  <div id="stepSpeak" hidden>
+    <div class="rec" style="margin-bottom:10px"><span class="led"></span><span class="muted" id="recStatus">Recording</span></div>
+    <h2 id="speakTopic"></h2>
+    <div class="dialwrap" style="margin-top:20px">
+      <div class="dial running" id="speakDial">
+        <svg width="240" height="240" viewBox="0 0 240 240">
+          <circle class="track" cx="120" cy="120" r="98"></circle>
+          <circle class="prog" cx="120" cy="120" r="98" transform="rotate(-90 120 120)"></circle>
+        </svg>
+        <div class="read"><span class="t" id="speakClock">0:00</span><span class="l" id="speakTarget">of 1:00</span></div>
+      </div>
+      <div>
+        <h3 id="speakCue"></h3>
+        <p class="lede" style="margin-bottom:14px">Keep going until the ring fills. A pause beats a filler.</p>
+        <button class="btn" id="stopSpeech">Finish speech</button>
+      </div>
+    </div>
+    <div class="livegrid">
+      <div class="transcript" id="liveTranscript"><span class="empty">Your words appear here as you speak.</span></div>
+      <div class="radar">
+        <h4>Filler radar</h4>
+        <div class="big" id="fillerBig">0</div>
+        <div class="sub" id="fillerSub">fillers so far</div>
+        <hr>
+        <div id="fillerList" class="sub">Nothing yet.</div>
+        <hr>
+        <div class="fl"><span>Words</span><span id="liveWords">0</span></div>
+        <div class="fl"><span>Pace</span><span id="liveWpm">—</span></div>
+      </div>
+    </div>
+    <div id="micNotice"></div>
+    <div id="levelWrap" style="margin-top:14px" hidden>
+      <div class="muted" style="margin-bottom:5px">Input level — this should move while you talk</div>
+      <div style="height:14px;background:var(--card);border:2px solid var(--line);border-radius:999px;overflow:hidden">
+        <div id="levelBar" style="height:100%;width:0%;background:var(--green);transition:width .08s linear"></div>
+      </div>
+      <div class="muted" id="levelHint" style="margin-top:5px"></div>
+    </div>
+    <div style="margin-top:26px" id="askSpeakSlot"></div>
+  </div>
+
+  <!-- rescue step -->
+  <div id="stepRescue" hidden>
+    <h2>Nothing was transcribed.</h2>
+    <p class="lede">Your recording is saved, but live transcription needs Chrome or Edge. Play it back and type it here.</p>
+    <div id="rescueAudio"></div>
+    <textarea id="rescueText" placeholder="Type what you said — fillers and all."></textarea>
+    <div class="row" style="margin-top:14px">
+      <button class="btn gold" id="rescueGo">Analyse this speech</button>
+      <button class="btn ghost" id="rescueSkip">Skip today</button>
+    </div>
+  </div>
+
+  <!-- loading step -->
+  <div id="stepLoading" hidden>
+    <div class="loadbox"><div class="pulse"></div><h3 id="loadMsg">Listening back to your speech…</h3>
+    <p class="muted">Counting fillers, checking structure, finding your one thing.</p></div>
+  </div>
+
+  <!-- report step -->
+  <div id="stepReport" hidden>
+    <div class="row" style="justify-content:space-between"><span class="muted" id="repMeta">Report</span></div>
+    <h2 id="repTopic"></h2>
+    <div class="scorehead" style="margin-top:18px">
+      <div class="bigscore" id="repScore">—<em>/10</em></div>
+      <p class="lede" id="repSummary" style="margin:0"></p>
+    </div>
+    <div class="assess">
+      <h3 style="color:#204633">How you did</h3>
+      <p id="assessText"></p>
+    </div>
+    <div class="takeaway">
+      <h3 style="color:var(--red)">Your one thing</h3>
+      <h2 id="takeHead"></h2>
+      <p id="takeWhy"></p>
+      <div class="try" id="takeTry"></div>
+    </div>
+    <div class="vocab" id="vocabCard">
+      <h3>🔤 Word of the day <span class="muted" style="font-family:var(--mono);font-size:11px">FROM YOUR OWN SPEECH</span></h3>
+      <div class="row" style="align-items:baseline;gap:10px">
+        <span class="word" id="vWord"></span><span class="pos" id="vPos"></span>
+      </div>
+      <div style="color:var(--ink-2);font-size:15px" id="vMeaning"></div>
+      <div class="swap"><div class="was" id="vWas"></div><div class="arr">becomes</div><div class="now" id="vNow"></div></div>
+      <div style="border-top:1.5px dashed #D9B45C;padding-top:12px;font-size:15px">
+        <span class="muted" style="font-family:var(--hand);font-size:13px">Say it this week</span><br>
+        <span id="vUse"></span></div>
+    </div>
+    <div class="stats" id="repStats"></div>
+    <h3 style="margin-top:24px">Score breakdown</h3>
+    <div id="repBars"></div>
+    <h3 style="margin-top:26px">What you said</h3>
+    <div class="transcript" id="repTranscript" style="max-height:none"></div>
+    <div id="repAudio"></div>
+    <div style="margin-top:30px" id="askReportSlot"></div>
+    <div class="row" style="margin-top:24px"><button class="btn" id="repDone">Done for today</button></div>
+  </div>
+
+</section>
+
+<!-- ============ GUIDE ============ -->
+<section class="page" id="p-guide">
+  <h1>Structures worth stealing ✏️</h1>
+  <div class="squiggle"></div>
+  <p class="lede">Pick one shape before you speak. A shape beats a script — it gives your brain somewhere to put each thought.</p>
+
+  <h3 style="margin-top:6px">Match your topic to a structure</h3>
+  <p class="lede" style="margin-bottom:16px">Read the topic during prep and check which pattern it fits — that's your shape for this speech.</p>
+  <div id="matchList"></div>
+
+  <h3 style="margin-top:32px">The structures themselves</h3>
+  <div id="guideList"></div>
+</section>
+
+<!-- ============ PROGRESS ============ -->
+<section class="page" id="p-progress">
+  <h1>Your record so far 📈</h1>
+  <div class="squiggle"></div>
+  <div class="stats" id="progStats"></div>
+  <div id="progCharts" hidden>
+    <h3 style="margin-top:24px">Rating over time</h3>
+    <div class="card"><svg class="trend" id="trendRating" viewBox="0 0 600 130" preserveAspectRatio="none"></svg></div>
+    <h3 style="margin-top:22px">Fillers per minute</h3>
+    <div class="card"><svg class="trend" id="trendFiller" viewBox="0 0 600 130" preserveAspectRatio="none"></svg></div>
+  </div>
+  <h3 style="margin-top:28px">Words you've collected</h3>
+  <div class="list" id="vocabList"></div>
+  <h3 style="margin-top:28px">Every session</h3>
+  <div class="list" id="histList"></div>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<section class="page" id="p-settings">
+  <h1>Settings ⚙️</h1>
+  <div class="squiggle"></div>
+
+  <h3>Mic &amp; recording check</h3>
+  <p class="lede" style="margin-bottom:10px">Runs a real test and reports exactly what works on this browser and this page. Use it if recording or the live transcript isn't behaving.</p>
+  <div class="row"><button class="btn small" id="diagRun">Run the check</button></div>
+  <div id="diagOut" style="margin-top:12px"></div>
+
+  <h3 style="margin-top:30px">Your Anthropic API key</h3>
+  <p class="lede" style="margin-bottom:10px">Used only in this browser, sent straight from your device to Anthropic's API — never stored anywhere else. Runs on Claude Haiku, which is the cheapest model: real daily use costs roughly a few cents a month. Get a key at <span style="font-family:var(--mono);font-size:13px">console.anthropic.com</span>.</p>
+  <div class="row">
+    <input type="password" id="apiKeyInput" placeholder="sk-ant-...">
+    <button class="btn small" id="apiKeySave">Save key</button>
+  </div>
+  <div id="apiKeyStatus" style="margin-top:10px"></div>
+
+  <h3 style="margin-top:30px">Level</h3><div class="opts" id="setLevelOpts"></div>
+  <h3>Subjects</h3><div class="opts grid2" id="setDomainOpts"></div>
+  <div class="row" style="margin-top:14px">
+    <button class="btn gold" id="setSave">Save changes</button>
+  </div>
+
+  <h3 style="margin-top:32px">Where your data lives</h3>
+  <p class="lede" style="margin-bottom:6px">Everything — topics, ratings, transcripts, vocab words, your API key — is saved in this browser's local storage, on this device only. Nothing is sent anywhere except your own analysis requests straight to Anthropic. Audio recordings are the one exception: they only exist in this tab's memory, so they're gone on refresh — download a clip from its player if you want to keep it.</p>
+
+  <h3 style="margin-top:28px">Start over</h3>
+  <p class="muted">Clears every session, rating and word — your API key too. There's no undo.</p>
+  <button class="btn ghost small" id="setReset">Erase all my data</button>
+</section>
+
+</div>
+
+<script>
+/* ================= DATA ================= */
+const LEVELS = {
+  beginner:{name:'Beginner',blurb:'Short, safe target with room to think.',prep:180,speech:[60],cue:'Say what you think, one reason, one example, stop.'},
+  intermediate:{name:'Intermediate',blurb:'Opinion topics, a bit more room.',prep:120,speech:[60,90,120],cue:'Open with your position, then back it up.'},
+  advanced:{name:'Advanced',blurb:'Abstract topics, almost no prep.',prep:45,speech:[120,150,180],cue:'Frame the tension, take a side, concede one point, close.'}
+};
+
+const DOMAINS = {
+  work:'Work & Career', tech:'Technology & AI', society:'Society & Ideas', life:'Everyday Life',
+  science:'Science & Nature', culture:'Culture & Media', money:'Money & Spending', health:'Health & Wellbeing',
+  travel:'Travel & Places', food:'Food & Cooking', learning:'Learning & School', people:'People & Relationships',
+  sport:'Sport & Fitness', history:'History & The Past', ethics:'Ethics & Big Questions', making:'Creativity & Making',
+  home:'Home & City', future:'The Future'
+};
+
+const T = {
+work:{b:["Describe the exact moment a manager's feedback actually changed how you worked","Walk through the last meeting you sat in that could've been an email — what made it drag?","Tell the story of the worst first day you've had at a job, and what would've fixed it","Pick one task you keep putting off — explain exactly why, step by step","You have to train your replacement in 20 minutes — what three things do you show them first?","Describe a specific piece of software or tool at work you'd defend to a skeptic","Tell us about a time a coworker disagreed with you and how it actually got resolved","If you designed your own job title tomorrow, what would it say and why"],
+i:["Should every company move to a four-day week, or does it only work for some jobs?","Argue for or against: job titles matter more than the actual work people do","A manager on your team isn't delivering — walk through exactly what you'd say to them","Should performance reviews happen once a year or continuously — pick one and defend it","Make the case that company culture is really decided by one specific thing","Has remote work changed who gets promoted, and is that change good or bad?","Is it fair to expect employees to bring 'passion' to a job that pays the bills?","Argue that being competent isn't enough to get ahead at work — something else matters more"],
+a:["Defend the claim that productivity is the wrong way to measure knowledge work","Make the strongest case for hiring someone with potential over someone with experience","Argue that ambition and contentment aren't actually opposites, using a specific example","Who should bear responsibility when an automated business decision causes harm — argue a position","As expertise gets cheaper, what becomes valuable instead? Defend a specific answer","Defend the most-hated meeting format in your industry — find its real value","Make the strongest argument against the career path you're currently on","Argue that institutions inevitably outlive the values of the people who built them"]},
+tech:{b:["Pick the one app you open first every morning and explain exactly why it's first","Explain how a search engine actually finds a webpage, to someone who's never wondered","Describe the first piece of technology you genuinely loved, in enough detail we can picture it","Take a position: screens before bed are fine, or they're not — defend it with your own habits","Name one missing feature on your phone and describe exactly how you'd design it","When something breaks, do you fix it or replace it — walk through your last decision","Teach us, in a minute, how you'd explain cloud storage to your grandparent","If you could only keep three apps, name them and defend each one specifically"],
+i:["Should AI writing tools be allowed in school assignments — pick a clear line and defend it","Argue that privacy is worth more than convenience, using a real example from your life","When software fails and causes harm, who's responsible — the coder, the company, or the user?","Are recommendation algorithms narrowing what people like, or just reflecting it back accurately?","Should every job now require basic data literacy — defend a yes or no","Was the internet actually better ten years ago, or is that just nostalgia talking?","How much should a company be forced to explain about how its AI makes decisions?","Argue that the annual phone upgrade cycle should slow down — or that it's fine as is"],
+a:["Argue that automation redistributes work rather than destroying it, with a concrete example","Make the case for deliberately slowing down a technology that already works well","Should algorithms be allowed to make final hiring decisions — argue a firm position","What exactly do we lose when we outsource memory to devices — be specific","Defend or reject: data is never neutral, someone always chose what it measures","Make the case for software that is deliberately harder to use than it needs to be","Who should govern a technology that operates across every border at once — propose an answer","Argue that progress and disruption get treated as synonyms when they shouldn't be"]},
+society:{b:["Describe one rule in your community you'd change tomorrow, and exactly how","What's one specific thing that makes a neighbourhood feel like home to you?","Tell the story of the kindest thing a stranger has done for you","Should cooking be a required school subject — defend it with a personal example","Name one habit that would improve your city if everyone adopted it","If you had one free day to volunteer, what would you actually do with it, hour by hour","Describe how you'd welcome someone new to your town in their first week","Name the public place you value most and describe exactly what happens there"],
+i:["Is voting a duty everyone owes, or a choice like any other — defend a position","Should news be free for everyone, even if it means outlets can't survive?","Does travel actually make people more open-minded, or do we just say that?","At what specific point does more money stop buying more happiness — defend a number or line","Should schools rank students publicly — argue for or against with a specific consequence","Make the case that living in a smaller city is the better life, not just the quieter one","Do we owe strangers our attention, or is ignoring people in public perfectly fine?","Is being visibly busy a status symbol now — defend or reject with an example"],
+a:["Argue that equal opportunity and equal outcome are fundamentally in tension","Defend a tradition you personally don't follow, as if you did","Who deserves credit when a team achieves something — divide it and defend the split","Weigh free speech against freedom from harm using one real, specific case","Make the strongest case against a belief you personally hold","Should future generations get a formal legal voice in decisions today — propose how","Argue that progress requires forgetting as much as it requires remembering","Is fairness actually measurable, or just a feeling we agree to act on — defend a position"]},
+life:{b:["Walk through your actual morning routine and defend one part of it as non-negotiable","Describe the best meal you've ever cooked, step by step, including what went wrong","Name one small purchase that genuinely improved your life and explain exactly how","Plan a completely free Saturday, hour by hour, and defend the plan","Name the hardest habit you've ever kept and what made it stick","Design the room you'd build for yourself if space were no object — describe it","Pick the first place you'd take a visitor to your city and defend the choice","Describe something you learned this month that had nothing to do with work"],
+i:["Is waking up early actually overrated — defend a position using your own experience","Should you finish a book you're not enjoying, or is quitting the smarter move?","Argue that living alone teaches something living with others genuinely can't","Convince someone to try a hobby they've already dismissed — pick a real one","Which wins for actually changing your life — big goals or small systems? Defend it","Is it worth paying more for something that lasts, or is that reasoning usually wrong?","Make the case for doing nothing on purpose, with a specific example of when it worked","Do routines make life richer, or do they quietly narrow it — argue a side"],
+a:["Defend comfort as an underrated virtue, not a lazy one","Argue that we should deliberately keep fewer memories, not chase more of them","Explain the difference between living somewhere and merely staying there","Name the hidden cost of always having a choice, and defend that it's real","Is self-improvement just a polite form of self-criticism — argue a position","Defend a decision you regret, as if you'd make it again","How much of who you are is really just where you're from — defend an answer","Name the most useful thing about your life that you cannot actually measure"]},
+science:{b:["Pick one natural phenomenon that genuinely fascinates you and explain why, specifically","Explain the water cycle to a ten-year-old using only things they'd recognise","Make the case that sleep matters more than we treat it like it does","Pick one animal you'd study for a year and explain exactly what you'd want to learn","Name one change you'd make to how food is grown near you, and why","Pick a science topic you wish you understood better and explain what confuses you","Describe exactly how you'd get a skeptical friend interested in the night sky","Defend the claim that walking outside changes how you think, using your own experience"],
+i:["Should public money go to space exploration while problems remain here — defend a position","How should scientists talk to the public differently than they do now — propose one change","Is nuclear power a fair part of a clean energy grid — defend a position","Who should fund research that has no obvious commercial payoff — propose an answer","Name one risk people routinely underestimate and explain exactly why","How much should we trust the result of a single study — defend a threshold","Make the case that statistics should be taught before calculus","Should cities be redesigned around rising water, or is that premature — defend a stance"],
+a:["Argue that uncertainty in science is a finding, not a failure","Should some research questions be left deliberately unanswered — defend a position","Argue that models shape the reality they're meant to describe","Who owns knowledge produced with public money — propose a clear answer","Name a specific limit of measurement in living systems and defend why it matters","Is scientific consensus a form of authority or a form of evidence — defend a distinction","What counts as proof outside a laboratory — propose a working definition","Defend an unpopular but genuinely held position on climate policy"]},
+culture:{b:["Pick one film or show everyone should watch once and defend exactly why","Pick the one song that best explains your taste and unpack what it says about you","Name a book that changed how you think, and describe the specific moment it did","Describe a festival or celebration you love, in enough detail we could attend it","Argue the book is always better than the film — or isn't — using a specific example","Name your favourite kind of live event and describe what makes it work","Pick a fictional character you'd want as a colleague and defend the choice","Describe the last thing that made you laugh out loud, in full"],
+i:["Are remakes a failure of imagination, or a legitimate craft — defend a position","Should art be separated from the artist who made it — argue a clear line","Does sport build character, or does it just reveal character that was already there?","Do awards actually improve the work they judge, or just reward it — defend a stance","Is short-form video changing how stories get told, for better or worse?","Should museums return objects to where they came from — defend a position with a case","Argue that local culture is worth protecting from global taste, or that it isn't","Make the case for reading fiction as an adult, to someone who's stopped"],
+a:["Argue that nostalgia is a creative dead end","Propose who actually gets to decide what becomes a classic, and defend it","Argue that criticism is itself a creative act, not a lesser one","Can something be popular and still genuinely underrated — defend with an example","Make the case against giving audiences exactly what they say they want","Argue that translation always loses something — and ask whether it also adds something","Is originality a modern invention, not a timeless value — defend a position","Defend a genre you personally don't enjoy, as its strongest advocate"]},
+money:{b:["Describe the best money you've ever spent and defend exactly why it was worth it","Tell the story of something you saved up for and how long it actually took","Take a clear side: cash or card, and defend it with how you actually spend","Name one money habit you'd teach a teenager first, and why that one","Describe something you regret buying and pinpoint exactly where the decision went wrong","Argue that paying for convenience is usually worth it — or usually isn't","Explain exactly how you personally decide something is too expensive","Name one free thing you value more than something you've paid for"],
+i:["Should personal finance be a required school subject — defend with a specific curriculum idea","Is renting really 'throwing money away' — defend a position with real numbers in mind","Do subscriptions make us worse at valuing the things we actually own?","Should salaries be public within a company — defend a position","For most people, is saving more or earning more the better focus right now?","Are we spending more just because it's easier to — defend with a personal example","Should tipping exist at all — argue for keeping it, replacing it, or ending it","Is buying secondhand always the better choice — defend a specific exception or rule"],
+a:["Argue that wealth and worth get routinely confused, with a concrete example","Defend the claim that a budget is really a values document in disguise","Should there be a hard cap on any one thing a person can own — defend or reject","Argue that time and money are treated as interchangeable when they shouldn't be","Who should bear the financial cost of a much longer human life — propose an answer","Is investing a form of prediction, or a form of faith — defend a distinction","Make the case against optimising every single purchase decision","Argue that debt shapes behaviour more powerfully than income does"]},
+health:{b:["Name one habit that reliably makes you feel better and explain exactly why it works","Share the best sleep advice you've ever gotten and whether you actually follow it","Walk through exactly how you handle a genuinely stressful day, step by step","Name one thing you'd change about your daily routine and what's stopped you so far","Make the case for walking, using your own experience as evidence","Name a food that makes you feel good and defend it beyond just taste","Describe exactly what you do to counter sitting all day","Explain how you personally know it's time to take a break"],
+i:["Should employers pay for employee wellbeing programs — defend a position","Are health-tracking apps helping people or making them anxious — defend a stance","Argue that stress isn't always bad, using a specific example of it helping","Should structured exercise be part of every school day — defend a position","Make the case that rest days need active defending, not just permission","Is health advice today too confusing to actually follow — defend with an example","Should mental health days be normal, unquestioned leave — argue a position","Does a strict routine protect wellbeing, or quietly restrict it — defend a side"],
+a:["Argue that health is a public good, not a personal project","Defend the claim that we've medicalised ordinary parts of life that don't need it","Who is actually responsible for a population's health — propose and defend an answer","Argue that prevention is undervalued precisely because it's invisible","Should extending lifespan itself be a goal — defend a position","Argue the limits of 'self-discipline' as an explanation for health outcomes","Is 'balance' a genuinely useful idea, or a polite excuse — defend a position","Make the case that care work is the real health system, and treat it as such"]},
+travel:{b:["Describe the best place you've ever been in enough detail we could find it","Name a place you'd return to every single year and defend why it doesn't get old","Take a side — window or aisle — and defend it properly","Describe your actual method for packing light, step by step","Describe the first thing you do the moment you arrive in a new city","Tell the story of a trip that went wrong, and what you'd do differently","Argue for travelling alone or travelling with people, using a real trip as evidence","Name a place on your list and defend exactly why it's there"],
+i:["Is tourism actually good for the places we visit — defend a position with a real example","Should popular destinations limit the number of visitors — defend a position","Do we travel to genuinely see a place, or to prove that we went — defend a distinction","Is one long trip better than several short ones — defend a position","Should flying cost more than it currently does — defend a position","Argue that living somewhere teaches more than visiting it ever could","Are guidebooks obsolete now — defend a position with how you actually plan trips","Make the case that home is an underrated destination"],
+a:["Argue that travel changes the traveller more than it changes the place","Defend the claim that distance is now cultural rather than physical","Propose who a place actually belongs to, and defend it","Examine the ethics of visiting somewhere fragile — defend a personal line","Is authenticity something a visitor can actually find, or always performed for them?","Argue whether we should design places for visitors or simply let them grow","Name what we owe the places that host us, and defend it specifically","Argue that migration and travel are the same act, judged very differently"]},
+food:{b:["Describe the one dish you can make without a recipe, in full detail","Name a meal that reminds you of home and describe exactly what triggers the memory","Walk through your actual approach to cooking for one person","Name the ingredient you always have on hand and defend why it earns that spot","Take a side on eating out versus eating in, using your own week as evidence","Describe a food you used to dislike and now love, and pinpoint what changed","Explain exactly how you'd teach a total beginner to cook one dish","Give your honest, specific position on breakfast — necessary or overrated"],
+i:["Should everyone eat significantly less meat — defend a position with a real trade-off","Is home cooking a luxury of time that not everyone has — defend a position","Do food trends actually improve how people eat, or just change what they buy?","Should restaurants be required to show calories on the menu — defend a position","Is convenience food unfairly judged compared to what people actually eat — defend a stance","Should cooking be a required school subject — defend it differently than a hobby argument","Are food delivery apps good or bad for the restaurants that use them — defend a position","Does eating together still matter as much as it used to — defend a position"],
+a:["Argue that taste is inherited more than it's chosen","Defend the claim that food is the strongest form of memory we have","Propose who actually owns a traditional recipe, and defend it","Argue that the true cost of cheap food is paid somewhere else entirely","Is authenticity in food essentially a myth — defend a position with a specific cuisine","Argue whether we should be designing food or simply growing it","Defend hospitality as an ethic rather than a service","Argue that scarcity shaped every cuisine we now admire"]},
+learning:{b:["Describe the best teacher you ever had and the one specific thing they did differently","Name something you taught yourself and walk through exactly how you did it","Pick one subject you'd bring back into school and defend why it matters now","Describe exactly how you personally learn something new, step by step","Give your honest, specific view on exams — what they get right and wrong","Describe one lesson that has genuinely stayed with you, and why it stuck","Name what you'd study if it were completely free, and defend the choice","Tell the story of learning something the hard way, from a specific mistake"],
+i:["Should homework exist at all — defend a position with a specific alternative","Is a university degree still worth it for most people — defend a position","Should students choose their subjects earlier than they currently do — defend a stance","Do grades actually measure learning, or something else entirely — defend a distinction","Should schools explicitly teach how to argue and debate — defend a position","Is learning a new language still necessary in an age of instant translation?","Are online courses real education, or something adjacent to it — defend a distinction","Should failure be explicitly part of how students are graded — defend a position"],
+a:["Argue that education sorts people more than it teaches them","Defend the claim that curiosity cannot actually be assessed","Propose who should decide what children learn, and defend it","Make the case that memorisation deserves a real defence, not dismissal","Is expertise in one field actually transferable to another — defend a position","Argue that the 'hidden curriculum' matters more than the stated one","Should learning be deliberately uncomfortable — defend a position","Argue that teaching is itself a form of research, not just delivery"]},
+people:{b:["Describe exactly what makes someone a good friend, using a real example","Describe how you actually keep in touch with people who matter to you","Recount a conversation you still remember, and explain why it stuck","Describe your actual approach to meeting new people","Name something a family member taught you that you still use","Walk through exactly how you apologise when you've gotten something wrong","Describe the best gift you've ever given and why you chose it","Name a person who changed your mind about something specific"],
+i:["Are adults genuinely worse at making friends — defend a position with a real example","Should you stay friends with someone who's changed a lot — defend a position","Is honesty always kind, or do the two sometimes conflict — defend with an example","Do group chats help relationships or quietly drain them — defend a position","Should families talk openly about money — defend a position","Is small talk underrated — defend a position using a specific memory","Do we expect too much from a single romantic relationship — defend a position","Should you keep score in a friendship — defend a clear position"],
+a:["Argue that we choose our families more than we admit","Defend the claim that solitude actually improves relationships","Propose what we owe the people who raised us, and defend the limits of it","Argue that forgiveness exists mainly for the person doing the forgiving","Is loyalty a virtue, or just a habit we've dressed up — defend a position","Argue that real intimacy requires being misunderstood sometimes","Make the strongest case for keeping some things permanently private","Argue that community cannot be designed, only allowed to happen"]},
+sport:{b:["Name a sport you'd genuinely try once and describe exactly what draws you to it","Take a clear side — watching or playing — and defend it","Describe the best team moment you've ever witnessed, in full detail","Walk through exactly how you personally stay active","Name a game you loved as a child and explain what made it work","Make the case for running, using your own experience or someone else's","Defend the specific value of losing at something","Describe your ideal way to move your body for one hour"],
+i:["Should sport be a required part of every school week — defend a position","Do elite sports deserve public funding — defend a position with a specific trade-off","Is competition genuinely good for children — defend a position","Should e-sports count as real sport — defend a clear line","Are athletes role models by default, or only when they choose to be?","Is fitness culture, as it exists now, actually healthy — defend a position","Should there be a hard cap on transfer or salary spending in sport — defend a position","Does home advantage really exist, or is it overstated — defend a position"],
+a:["Argue that sport is the last place we still accept clear, unambiguous rules","Defend the claim that discipline is itself a kind of talent","Propose who actually owns a sports team — the city, the fans, or the buyer","Make the case against measuring every single performance metric","Argue that greatness is a story we construct afterward, not a fact we witness","Defend the claim that endurance teaches more than raw skill does","Should winning matter as much as it currently does — defend a position","Argue that play is undervalued in adult life specifically because it isn't competitive"]},
+history:{b:["Name a period you'd visit for exactly one day and defend the choice","Pick a historical figure you'd interview and name the one question you'd ask first","Name something old you'd bring back into everyday use, and why","Describe a place with real history you've personally stood in","Recount a story your family tells, and what you think it's really about","Explain why you think people keep photographs, using your own habit as evidence","Name an invention that changed daily life and describe exactly how","Explain, specifically, what you think museums are actually for"],
+i:["Should contested statues come down — defend a clear position with a specific case in mind","Is history mostly written by the winners — defend a position with a counterexample","Should everyone study their own country's history in depth — defend a position","Do anniversaries help us remember, or do they let us perform remembering — defend a distinction","Is nostalgia for the past actually dangerous — defend a position","Should every old building be preserved — defend a clear limit","Who should get to tell a nation's story — defend a position","Does knowing history actually change present decisions — defend a position with an example"],
+a:["Argue that the past is a country we keep redrawing, not a fixed place","Defend the claim that forgetting is historically necessary, not just convenient","Propose who is responsible for a historical wrong committed generations ago","Argue that progress narratives conceal as much as they reveal","Is there really such a thing as a single decisive moment in history — defend a position","Argue that history is the study of what didn't happen, as much as what did","Defend the claim that archives are inherently political objects","Argue that continuity across time is stranger than change is"]},
+ethics:{b:["Name a rule you'd genuinely never break and explain exactly why","Take a clear position: is honesty always the best policy — defend it with an example","Describe a time you changed your mind about something and what changed it","Define fairness in your own words, using a specific situation","Should you help a stranger before someone you know — defend a position","Name the hardest promise you've ever had to keep","Give a clear rule for when a small lie is acceptable, if ever","Name one thing you'd never want automated, and defend exactly why"],
+i:["Do good intentions actually matter if the outcome is bad — defend a position","Should we judge historical people by the standards of their own era — defend a position","Is charity a duty, or a choice like any other — defend a position","Can something be legal and still wrong — defend a position with a real example","Do animals have rights in the same sense people do — defend a position","Is loyalty ever a bad reason to do something — defend a position with an example","Should the truth always be told, even when it clearly causes harm — defend a position","Is real inconvenience a fair price to pay for a principle — defend a position"],
+a:["Argue that moral progress is real, using a specific historical example","Defend the claim that intentions are, in the end, irrelevant to ethics","Propose who actually 'counts' in a difficult decision, and defend the boundary","Is there a duty to strangers far away that we routinely ignore — defend a position","Can a system, rather than a person, be held morally responsible — defend a position","Make the case for genuine moral uncertainty as a virtue, not a weakness","Should we trust our gut instincts about right and wrong — defend a position","Argue that virtue is something practised, not something simply held"]},
+making:{b:["Describe something you made and still keep, in enough detail we could picture it","Name one creative habit you'd genuinely start if you had ten spare minutes a day","Describe the first thing you'd build if you had a completely free afternoon","Explain, specifically, why you think people draw","Name a craft you admire and describe exactly what impresses you about it","Take a position: finishing matters more than starting, or the reverse — defend it","Name a tool you love using and describe exactly why it feels right in your hand","Describe something you'd repair rather than replace, and why"],
+i:["Does everyone have a creative side, or is that just something we say — defend a position","Should creative work always be paid upfront — defend a position","Are constraints actually good for creativity — defend a position with an example","Is talent overrated compared to sheer practice — defend a position","Should AI-assisted creative work be clearly labelled — defend a position","Does having an audience genuinely improve the work, or just change it — defend a distinction","Is imitation a legitimate part of learning a craft — defend a position","Are hobbies ruined the moment you start monetising them — defend a position"],
+a:["Argue that craft is a form of thinking done with your hands","Defend the claim that taste develops before skill does","Propose who actually owns an idea, and defend the boundary","Make the case for deliberately making things badly sometimes","Is originality actually a collaborative process, not a solitary one — defend a position","Argue that finished work teaches more than perfect work ever could","Defend the claim that tools shape what gets made, not the other way around","Argue that boredom is an underrated creative resource"]},
+home:{b:["Describe the best room you've ever lived in, in enough detail we could picture it","Name a city you'd live in for exactly one year and defend the choice","Describe, specifically, what makes a street feel safe to you","Name one thing you'd change about your current home, and how","Take a position — living in a city, or outside one — and defend it","Describe a neighbour who made a real difference, and how","Plan the perfect Sunday at home, hour by hour","Name one thing you'd never move without, and why"],
+i:["Should cities be built primarily for cars — defend a position","Is remote work genuinely reshaping smaller towns — defend a position with an example","Should housing be treated as an investment, or explicitly not — defend a position","Do neighbourhoods need local shops to actually survive as neighbourhoods — defend a position","Is a smaller home genuinely a better life — defend a position","Should public parks be a legal requirement in every neighbourhood — defend a position","Are suburbs underrated compared to how they're usually discussed — defend a position","Who should get to decide how a city grows — defend a position"],
+a:["Argue that a city is fundamentally an argument about who belongs in it","Defend density as a moral good, not just a planning preference","Propose who actually owns 'the view', and defend the answer","Argue that home is a practice you maintain, not a place you simply have","Make the case for deliberately slow urban change","Defend the claim that public space is the real infrastructure of a city","Should we build as if a place needs to last a hundred years — defend a position","Argue that belonging cannot be planned, only allowed to happen"]},
+future:{b:["Name one thing you genuinely hope changes in ten years, and why that one","Name a job you're confident will still exist, and defend the reasoning","Name one thing you hope never changes, and why it matters to you","Describe how you'd like to be working five years from now, specifically","Write, out loud, one sentence you'd want someone in 2050 to read","Describe a prediction you made that turned out wrong, and what you learned","Name one skill worth learning right now, and defend the timing","Describe what you think the future holds for the specific place you live"],
+i:["Will offices still exist in twenty years — defend a position","Should we actively plan for much longer human lifespans — defend a position","Is optimism about the future actually useful, or just comforting — defend a position","Will people read less fiction in the future — defend a position","Should children be taught for jobs that don't exist yet — defend a position","Are predictions about the future ever genuinely useful — defend a position","Will cities get bigger or emptier over the next few decades — defend a position","Is change actually speeding up, or does it just feel that way — defend a position"],
+a:["Argue that we owe the future more than we owe the past","Defend the claim that forecasting itself shapes what ends up happening","Propose who should speak for people who aren't born yet, and defend it","Make the case against long-term planning, as a deliberately provocative position","Is progress actually cumulative, or does it reset more than we admit — defend a position","Argue that risk we can't yet imagine is the risk that matters most","Should we deliberately preserve the option to change our minds later — defend a position","Argue that the future is already arriving unevenly, not all at once"]}
+};
+const TIER = {beginner:'b', intermediate:'i', advanced:'a'};
+
+const FILLERS = ['um','uh','erm','er','ah','hmm','like','basically','actually','literally','honestly','right','okay','so','well','yeah','anyway','stuff'];
+const PHRASES = ['you know','i mean','kind of','sort of','and stuff','or whatever','a little bit','i guess','you see'];
+const HARD = new Set(['um','uh','erm','er','ah','hmm','like']);
+
+const VOCAB_BANK = [
+  {trig:/\bgood\b/i,was:'good',word:'compelling',pos:'adjective',meaning:'strong enough to hold attention or agreement',use:"That's a compelling reason to switch approaches."},
+  {trig:/\breally\b/i,was:'really',word:'genuinely',pos:'adverb',meaning:'in a real, sincere way — not just for emphasis',use:"I'm genuinely curious how that turned out."},
+  {trig:/\bstuff\b/i,was:'stuff',word:'material',pos:'noun',meaning:'the substance or content of something, said precisely',use:"Let's go over the material before the meeting."},
+  {trig:/\bbig\b/i,was:'big',word:'substantial',pos:'adjective',meaning:'large enough to matter noticeably',use:"That's a substantial improvement over last quarter."},
+  {trig:/\bthing\b/i,was:'thing',word:'factor',pos:'noun',meaning:'one specific element that influences an outcome',use:"Timing was the deciding factor for me."},
+  {trig:/\ba lot\b/i,was:'a lot',word:'considerably',pos:'adverb',meaning:'by a large, noticeable amount',use:"This changes considerably once you factor in cost."},
+  {trig:/\bnice\b/i,was:'nice',word:'thoughtful',pos:'adjective',meaning:'showing genuine care or consideration',use:"That was a thoughtful way to handle it."},
+  {trig:/\bkind of\b/i,was:'kind of',word:'somewhat',pos:'adverb',meaning:'to a moderate but real degree',use:"It's somewhat more complicated than it looks."}
+];
+
+/* ================= STATE (localStorage — standalone file) ================= */
+const KEY='daily-impromptu-v2';
+const blank=()=>({profile:null,sessions:[],vocab:[],apiKey:''});
+let S=blank();
+function loadState(){try{const raw=localStorage.getItem(KEY);if(raw)return JSON.parse(raw);}catch(e){}return blank();}
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+/* ================= HELPERS ================= */
+const $=id=>document.getElementById(id);
+const fmt=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const today=()=>new Date().toISOString().slice(0,10);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const wc=t=>t.trim()?t.trim().split(/\s+/).length:0;
+
+function streak(){
+  if(!S.sessions.length)return 0;
+  const days=[...new Set(S.sessions.map(s=>s.date))].sort().reverse();
+  let cursor=today();
+  if(days[0]!==cursor){const y=new Date(Date.now()-864e5).toISOString().slice(0,10);if(days[0]!==y)return 0;cursor=y;}
+  let n=0;
+  for(const d of days){if(d===cursor){n++;cursor=new Date(new Date(cursor).getTime()-864e5).toISOString().slice(0,10);}else break;}
+  return n;
+}
+function countFillers(text){
+  let clean=' '+text.toLowerCase().replace(/[^a-z' ]/g,' ').replace(/\s+/g,' ')+' ';
+  const tally={};
+  PHRASES.forEach(p=>{const m=clean.match(new RegExp('\\s'+p.replace(/ /g,'\\s')+'\\s','g'));if(m){tally[p]=m.length;clean=clean.replace(new RegExp('\\s'+p.replace(/ /g,'\\s')+'\\s','g'),' ~ ');}});
+  const words=clean.split(' ').filter(Boolean);
+  words.forEach((w,i)=>{
+    if(!FILLERS.includes(w))return;
+    if(!HARD.has(w)&&i>0&&!['~','and','but','because'].includes(words[i-1]))return;
+    tally[w]=(tally[w]||0)+1;
+  });
+  return {tally,total:Object.values(tally).reduce((a,b)=>a+b,0)};
+}
+function markFillers(text){
+  let out=esc(text);
+  [...PHRASES,...FILLERS].sort((a,b)=>b.length-a.length).forEach(f=>{
+    out=out.replace(new RegExp('(^|[^a-zA-Z>])('+f.replace(/ /g,'\\s')+')(?=[^a-zA-Z<]|$)','gi'),(m,p,w)=>p+'<span class="f">'+w+'</span>');
+  });
+  return out;
+}
+function setArc(el,pct,over){
+  const c=el.querySelector('.prog'),r=98,circ=2*Math.PI*r;
+  c.style.strokeDasharray=circ;
+  c.style.strokeDashoffset=circ*(1-Math.min(1,Math.max(0,pct)));
+  el.classList.toggle('over',!!over);
+}
+function callClaude(prompt,maxTokens){
+  if(!S.apiKey)return Promise.reject(new Error('no-key'));
+  return fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':S.apiKey,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]})
+  }).then(r=>r.json()).then(data=>{
+    if(data.error)throw new Error(data.error.message||'api error');
+    return (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n').trim();
+  });
+}
+
+/* ================= NAV / TABS ================= */
+const TABS=[['practice','Practice'],['guide','Guide'],['progress','Progress'],['settings','Settings']];
+function paintTabs(){
+  $('tabs').innerHTML=TABS.map(([k,l])=>`<button class="tabbtn" data-p="${k}">${l}</button>`).join('');
+  $('tabs').querySelectorAll('.tabbtn').forEach(b=>b.onclick=()=>gotoPage(b.dataset.p));
+}
+function gotoPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  $('p-'+name).classList.add('on');
+  $('tabs').querySelectorAll('.tabbtn').forEach(b=>b.classList.toggle('active',b.dataset.p===name));
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(name==='guide')buildGuide();
+  if(name==='progress')renderProgress();
+  if(name==='settings')renderSettings();
+}
+function paintStreakBadge(){
+  $('streakbadge').textContent=S.profile?`🔥 ${streak()}  ·  ${S.sessions.length} sessions`:'';
+}
+
+/* ================= SETUP ================= */
+let draft={level:null,domains:[]};
+function paintLevels(box,sel,pick){
+  box.innerHTML='';
+  Object.entries(LEVELS).forEach(([k,v])=>{
+    const b=document.createElement('button');b.className='opt';b.setAttribute('aria-pressed',sel===k);
+    b.innerHTML=`<span class="tick"></span><span><strong>${v.name}</strong><span class="d">${v.blurb} · speak ${v.speech.length>1?fmt(v.speech[0])+'–'+fmt(v.speech.at(-1)):fmt(v.speech[0])}</span></span>`;
+    b.onclick=()=>pick(k);box.appendChild(b);
+  });
+}
+function paintDomains(box,sel,toggle){
+  box.innerHTML='';
+  Object.entries(DOMAINS).forEach(([k,v])=>{
+    const b=document.createElement('button');b.className='opt';b.setAttribute('aria-pressed',sel.includes(k));
+    b.innerHTML=`<span class="tick"></span><span><strong>${v}</strong></span>`;
+    b.onclick=()=>toggle(k);box.appendChild(b);
+  });
+}
+function refreshSetup(){
+  paintLevels($('levelOpts'),draft.level,k=>{draft.level=k;refreshSetup()});
+  paintDomains($('domainOpts'),draft.domains,k=>{draft.domains=draft.domains.includes(k)?draft.domains.filter(x=>x!==k):[...draft.domains,k];refreshSetup()});
+  $('setupDone').disabled=!(draft.level&&draft.domains.length);
+}
+$('setupDone').onclick=()=>{
+  S.profile={level:draft.level,domains:draft.domains,since:today()};
+  saveState();paintTabs();paintStreakBadge();gotoPage('practice');startDay();
+};
+
+/* ================= TOPIC ================= */
+let cur={};
+function startDay(){
+  ['stepPrep','stepSpeak','stepRescue','stepLoading','stepReport'].forEach(id=>$(id).hidden=true);
+  $('stepTopic').hidden=false;
+  const kb=$('keyBanner');
+  if(kb)kb.hidden=!!S.apiKey;
+  const done=S.sessions.filter(s=>s.date===today()).length;
+  $('topicHead').textContent=done?"That's today handled. 🎉":'One topic. One minute.';
+  const st=streak();
+  $('topicLede').textContent=done?'Spin again any time you want another go.':(st?`You're ${st} day${st>1?'s':''} in.`:'Spin, think, speak.');
+  $('reel').innerHTML='<div class="slot">Today\'s topic is waiting</div>';
+  $('topicMeta').innerHTML='';$('spinBtn').hidden=false;$('spinBtn').disabled=false;
+  $('toPrepBtn').hidden=true;
+  mountAsk('askTopicSlot');
+}
+function pickTopic(){
+  const p=S.profile,tier=TIER[p.level],recent=S.sessions.slice(-30).map(s=>s.topic),pool=[];
+  p.domains.forEach(d=>(T[d]?.[tier]||[]).forEach(t=>pool.push({topic:t,domain:d})));
+  let fresh=pool.filter(x=>!recent.includes(x.topic));
+  if(!fresh.length)fresh=pool;
+  return fresh[Math.floor(Math.random()*fresh.length)];
+}
+$('spinBtn').onclick=()=>{
+  const c=pickTopic(),opts=LEVELS[S.profile.level].speech;
+  cur={topic:c.topic,domain:c.domain,speechTarget:opts[Math.floor(Math.random()*opts.length)]};
+  const pool=[];S.profile.domains.forEach(d=>(T[d]?.[TIER[S.profile.level]]||[]).forEach(t=>pool.push(t)));
+  const strip=[];for(let i=0;i<14;i++)strip.push(pool[Math.floor(Math.random()*pool.length)]);
+  strip.push(c.topic);
+  const reel=$('reel'),reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  reel.style.transition='none';reel.style.transform='translateY(0)';
+  reel.innerHTML=strip.map((t,i)=>`<div class="slot${i<strip.length-1?' dim':''}">${esc(t)}</div>`).join('');
+  requestAnimationFrame(()=>{reel.style.transition=reduce?'none':'transform 2.4s cubic-bezier(.15,.85,.2,1)';reel.style.transform=`translateY(-${(strip.length-1)*120}px)`});
+  $('spinBtn').disabled=true;
+  setTimeout(()=>{
+    $('topicMeta').innerHTML=`<span class="pill">${DOMAINS[c.domain]}</span><span class="pill gold">Speak for ${fmt(cur.speechTarget)}</span>`;
+    $('spinBtn').hidden=true;
+    $('toPrepBtn').hidden=false;
+    mountAsk('askTopicSlot');
+  },reduce?60:2350);
+};
+$('toPrepBtn').onclick=()=>openPrep();
+
+/* ================= GUIDE ================= */
+const GUIDE=[
+{tag:'Opinion',name:'PREP',steps:['Point — state your position in one line','Reason — the single strongest reason behind it','Example — one concrete, specific example that proves it','Point — restate your position to close the loop'],ex:'"Remote work should stay optional. Because forcing everyone back ignores that focus work happens differently for different people. My last team shipped faster once designers could work from home during deep-focus days. So — optional, not mandatory."'},
+{tag:'Story',name:'STAR',steps:['Situation — set the scene in one sentence','Task — what you actually had to do','Action — what you specifically did about it','Result — what happened because of it'],ex:'"Our launch broke the night before. I was the only one online. I rolled back the last deploy myself instead of waiting for approval. We shipped on time and it became the new emergency process."'},
+{tag:'Persuasion',name:'Rule of Three',steps:['Pick exactly three supporting points, no more','Order them weakest to strongest','Signpost each one out loud: "first… second… and most importantly…"','Land on the third point as your close'],ex:'"Three reasons to switch: it\'s cheaper, it\'s faster, and — most importantly — it\'s the only one our whole team can actually use."'},
+{tag:'Debate',name:'Take–Concede–Close',steps:['Take a clear side immediately, no hedging','Concede the strongest point against you, honestly','Explain why your side still wins anyway','Close with the line you want remembered'],ex:'"I\'d cut the commute entirely. Yes, offices do build culture — I won\'t pretend otherwise. But culture survives ten fewer hours a week in traffic. That trade is worth making."'},
+{tag:'Any topic',name:'The elaboration trick',steps:['State the example in one short sentence','Add ONE specific detail — a name, number, or moment','Explain what it proves about your point, out loud','Stop — don\'t add a second example unless asked'],ex:'Weak: "I had a bad manager once." Elaborated: "I had a manager who cancelled our one-on-one four weeks running — and that\'s when I stopped bringing up problems at all, which proves silence is often a symptom, not a personality trait."'},
+{tag:'Openings',name:'Never start with "so, um, my topic is..."',steps:['Open with a mini-scene, a bold claim, or a question','Get to your actual position within two sentences','Save the throat-clearing — just start where the point starts'],ex:'Instead of "So my topic is about remote work..." try "Picture your best idea of the week — where were you when you had it? Probably not at your desk."'}
+];
+const MATCH=[
+{cue:'"Describe…", "Tell the story of…", "Recount…", "Walk through the last time…"',type:'A memory or experience question',structure:'STAR',why:'These want one real moment, not a general opinion — Situation/Task/Action/Result gives you a start and an end.'},
+{cue:'"Should…?", "Is X worth it?", "Argue that…", "Make the case for…"',type:'An opinion or persuasion question',structure:'PREP',why:'You need one clear position stated fast, backed by a reason and a proof — PREP does exactly that in four beats.'},
+{cue:'"Defend…", "Take a side…", "Weigh X against Y", "…or is that just X?"',type:'A debate or two-sided question',structure:'Take–Concede–Close',why:'These expect you to acknowledge the other side without losing your own — conceding a point actually makes you more convincing.'},
+{cue:'"Name three…", "Convince someone to…", "Give reasons…"',type:'A multi-point persuasion question',structure:'Rule of Three',why:'When the topic invites several supporting points, three signposted reasons are easier to follow live than one long argument.'},
+{cue:'"Explain X to a ten-year-old", "Walk through how…", "Teach us…"',type:'An explain-it-simply question',structure:'The elaboration trick',why:'Teaching topics live or die on one good concrete example — build the explanation around a single specific picture, not abstractions.'},
+{cue:'"Name…, and defend it", "Pick one and explain exactly why"',type:'A personal-pick question',structure:'PREP',why:'Even a simple pick-and-defend question wants a clear choice (Point), a reason, and one specific detail to back it up.'}
+];
+function buildMatch(){
+  $('matchList').innerHTML=MATCH.map(m=>`<div class="guidecard">
+    <h4 style="font-size:19px">${esc(m.type)} <span class="tag">${esc(m.structure)}</span></h4>
+    <p style="margin:2px 0 6px;font-size:14px;color:var(--ink-2)">Look for: ${esc(m.cue)}</p>
+    <p class="ex" style="margin-top:0">${esc(m.why)}</p>
+  </div>`).join('');
+}
+function buildGuide(){
+  buildMatch();
+  $('guideList').innerHTML=GUIDE.map(g=>`<div class="guidecard"><h4>${esc(g.name)} <span class="tag">${esc(g.tag)}</span></h4>
+    <div class="steps">${g.steps.map(s=>`<div>${esc(s)}</div>`).join('')}</div>
+    <p class="ex">${esc(g.ex)}</p></div>`).join('');
+}
+
+/* ================= ASK A COACH (mounted into topic + speak steps) ================= */
+let askHistory=[];
+function askHTML(heading){
+  return `<h3>${heading||'✦ Ask a coach'}</h3>
+    <p class="muted" style="margin-bottom:12px">Ask about your topic, structure, an example, or a sentence you just said.</p>
+    <div class="askbox">
+      <div class="askthread"></div>
+      <div class="askrow"><input type="text" class="askinput" placeholder="e.g. How should I open this speech?"><button class="btn gold small asksend">Ask</button></div>
+      <div class="chips askchips"></div>
+    </div>`;
+}
+let activeAskContainer=null;
+function mountAsk(slotId,heading,customChips){
+  const container=$(slotId);
+  container.innerHTML=askHTML(heading);
+  const threadEl=container.querySelector('.askthread');
+  const inputEl=container.querySelector('.askinput');
+  const sendEl=container.querySelector('.asksend');
+  const chipsEl=container.querySelector('.askchips');
+  const chips=customChips||['How should I open this?','Help me structure it','Give me an example I could use','Break down my last sentence formation'];
+  chipsEl.innerHTML=chips.map(c=>`<button class="chip">${esc(c)}</button>`).join('');
+  chipsEl.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{inputEl.value=b.textContent;sendAsk(container);});
+  sendEl.onclick=()=>sendAsk(container);
+  inputEl.onkeydown=e=>{if(e.key==='Enter')sendAsk(container)};
+  paintAsk(container);
+  if(!S.apiKey){
+    threadEl.innerHTML=`<div class="qa a"><span class="who">Coach</span>Add your Anthropic API key in Settings to start asking — it's quick and costs almost nothing on Haiku.</div>`;
+  }
+}
+function paintAsk(container){
+  const t=container.querySelector('.askthread');if(!t)return;
+  t.innerHTML=askHistory.map(m=>`<div class="qa ${m.role==='user'?'q':'a'}"><span class="who">${m.role==='user'?'You':'Coach'}</span>${esc(m.text)}</div>`).join('');
+  t.scrollTop=t.scrollHeight;
+}
+async function sendAsk(container){
+  if(!S.apiKey){renderSettings();gotoPage('settings');return}
+  const inputEl=container.querySelector('.askinput');
+  const v=inputEl.value.trim();if(!v)return;
+  inputEl.value='';askHistory.push({role:'user',text:v});paintAsk(container);
+  askHistory.push({role:'coach',text:'…'});paintAsk(container);
+  const ctx=`Current topic: ${cur.topic||'none chosen yet'}. ${cur.transcript?('The speaker\'s last transcript: """'+cur.transcript.slice(0,1200)+'"""'):''}`;
+  const prompt=`You are a friendly, concise speech coach embedded in a practice app. Answer the speaker's question in 2-4 short sentences, plain and specific — no headers, no bullet lists, just talk to them directly. If they ask about sentence formation or structure, quote a short bit of their own transcript if given and show the fix in-line.
+${ctx}
+Question: "${v}"`;
+  try{
+    const text=await callClaude(prompt,400);
+    askHistory[askHistory.length-1]={role:'coach',text:text||"I couldn't quite reach the coaching model — try again in a moment."};
+  }catch(e){
+    askHistory[askHistory.length-1]={role:'coach',text:e.message==='no-key'?"Add your API key in Settings first.":"Couldn't reach the coach — check your key and connection."};
+  }
+  paintAsk(container);
+}
+
+/* ================= PREP DIAL ================= */
+const MAXM=20;let prepMin=2,prepRunning=false,prepStart=0,prepEnd=0,raf=null;
+(function ticks(){
+  let h='';
+  for(let m=0;m<MAXM;m++){
+    const a=(m/MAXM)*2*Math.PI,r1=m%5===0?84:90;
+    h+=`<line class="tickm" x1="${120+r1*Math.sin(a)}" y1="${120-r1*Math.cos(a)}" x2="${120+94*Math.sin(a)}" y2="${120-94*Math.cos(a)}"></line>`;
+  }
+  $('dialTicks').innerHTML=h;
+})();
+function snap(m){return m<=5?Math.max(.5,Math.round(m*2)/2):Math.min(MAXM,Math.round(m))}
+function paintDial(){
+  const frac=prepMin/MAXM,a=frac*2*Math.PI;
+  setArc($('dial'),frac,false);
+  $('knob').setAttribute('cx',120+98*Math.sin(a));
+  $('knob').setAttribute('cy',120-98*Math.cos(a));
+  $('dialRead').textContent=fmt(prepMin*60);
+  $('dial').setAttribute('aria-valuenow',prepMin);
+  $('prepTabs').querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-pressed',+t.dataset.m===prepMin));
+}
+function openPrep(){
+  $('stepTopic').hidden=true;
+  $('prepTopicText').textContent=cur.topic;
+  $('prepTopicMeta').innerHTML=`<span class="pill">${DOMAINS[cur.domain]}</span><span class="pill gold">Speak for ${fmt(cur.speechTarget)}</span>`;
+  prepMin=LEVELS[S.profile.level].prep/60;prepRunning=false;prepStart=0;prepEnd=0;
+  $('prepTabs').innerHTML=[1,2,3,5,10].map(m=>`<button class="tab" data-m="${m}">${m} min</button>`).join('');
+  $('prepTabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{if(prepRunning)return;prepMin=+b.dataset.m;paintDial()});
+  $('prepTabs').hidden=false;$('startPrep').hidden=false;$('skipPrep').hidden=false;$('prepRunRow').hidden=true;
+  $('dial').classList.remove('running');$('dialLabel').textContent='drag to set';
+  paintDial();$('stepPrep').hidden=false;micCheck();
+}
+const dial=$('dial');
+function fromPointer(e){
+  if(prepRunning)return;
+  const r=dial.getBoundingClientRect(),x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2;
+  let a=Math.atan2(x,-y);if(a<0)a+=2*Math.PI;
+  prepMin=snap((a/(2*Math.PI))*MAXM);paintDial();
+}
+let dragging=false;
+dial.addEventListener('pointerdown',e=>{if(prepRunning)return;dragging=true;dial.classList.add('drag');dial.setPointerCapture(e.pointerId);fromPointer(e)});
+dial.addEventListener('pointermove',e=>{if(dragging)fromPointer(e)});
+dial.addEventListener('pointerup',()=>{dragging=false;dial.classList.remove('drag')});
+dial.addEventListener('pointercancel',()=>{dragging=false;dial.classList.remove('drag')});
+dial.addEventListener('keydown',e=>{
+  if(prepRunning)return;
+  const step=prepMin<5?.5:1;
+  if(e.key==='ArrowUp'||e.key==='ArrowRight'){prepMin=snap(Math.min(MAXM,prepMin+step));paintDial();e.preventDefault()}
+  if(e.key==='ArrowDown'||e.key==='ArrowLeft'){prepMin=snap(Math.max(.5,prepMin-step));paintDial();e.preventDefault()}
+});
+$('startPrep').onclick=()=>{
+  prepRunning=true;$('dial').classList.add('running');$('dialLabel').textContent='prep';
+  $('prepTabs').hidden=true;$('startPrep').hidden=true;$('skipPrep').hidden=true;$('prepRunRow').hidden=false;
+  cur.prepPlanned=Math.round(prepMin*60);
+  prepStart=Date.now();prepEnd=prepStart+cur.prepPlanned*1000;tickPrep();
+};
+$('skipPrep').onclick=()=>{cur.prepPlanned=Math.round(prepMin*60);cur.prepUsed=0;goSpeak()};
+$('readyNow').onclick=()=>endPrep();
+function tickPrep(){
+  if(!prepRunning)return;
+  const left=(prepEnd-Date.now())/1000;
+  $('dialRead').textContent=fmt(Math.max(0,left));
+  setArc($('dial'),left/cur.prepPlanned,false);
+  if(left<=0){endPrep();return}
+  raf=requestAnimationFrame(tickPrep);
+}
+function endPrep(){
+  cancelAnimationFrame(raf);
+  const usedRaw=prepStart?Math.round((Date.now()-prepStart)/1000):0;
+  cur.prepUsed=Math.max(0,Math.min(usedRaw,cur.prepPlanned||1200));
+  prepRunning=false;
+  goSpeak();
+}
+
+/* ================= MIC ================= */
+let micStream=null,micOK=false,srOK=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
+const REC_MIMES=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus',''];
+function pickMime(){
+  if(!window.MediaRecorder)return null;
+  for(const m of REC_MIMES){
+    if(m===''||MediaRecorder.isTypeSupported(m))return m;
+  }
+  return null;
+}
+async function micCheck(){
+  const box=$('micStatus');
+  try{
+    micStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    micOK=true;
+    const mime=pickMime();
+    box.innerHTML=`<span class="pill">🎙️ Mic ready${srOK?' · live transcript on':''}</span>`;
+    if(!srOK)box.innerHTML+=`<div class="notice" style="margin-top:12px">This browser records audio but can't transcribe live. Chrome or Edge gives you the live transcript.</div>`;
+    if(!window.MediaRecorder)box.innerHTML+=`<div class="notice" style="margin-top:12px">This browser doesn't support saving the audio clip itself (Safari is the common case) — the speech will still be scored from the transcript, just without a playable recording.</div>`;
+  }catch(e){
+    micOK=false;
+    const reason=e && e.name==='NotAllowedError'?'Permission was denied.':(e && e.name==='NotFoundError'?'No microphone device was found.':'');
+    box.innerHTML=`<div class="notice">No microphone yet. ${reason} Allow mic access in the address bar, then try again.</div>
+      <button class="btn ghost small" id="micRetry" style="margin-top:10px">Try again</button>`;
+    const r=$('micRetry');if(r)r.onclick=micCheck;
+  }
+}
+
+/* ================= LEVEL METER ================= */
+let audioCtx=null,analyser=null,levelRAF=null,sawSound=false;
+function startLevelMeter(stream){
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(!AC)return;
+    audioCtx=new AC();
+    if(audioCtx.state==='suspended')audioCtx.resume();
+    const src=audioCtx.createMediaStreamSource(stream);
+    analyser=audioCtx.createAnalyser();analyser.fftSize=512;
+    src.connect(analyser);
+    const buf=new Uint8Array(analyser.frequencyBinCount);
+    sawSound=false;
+    $('levelWrap').hidden=false;
+    const loop=()=>{
+      if(!analyser)return;
+      analyser.getByteTimeDomainData(buf);
+      let peak=0;
+      for(let i=0;i<buf.length;i++)peak=Math.max(peak,Math.abs(buf[i]-128));
+      const pct=Math.min(100,Math.round((peak/128)*260));
+      const bar=$('levelBar');if(bar)bar.style.width=pct+'%';
+      if(pct>6)sawSound=true;
+      const hint=$('levelHint');
+      if(hint)hint.textContent=sawSound?'Audio is reaching the page ✓':'No sound detected yet — check you are speaking into the right input device.';
+      levelRAF=requestAnimationFrame(loop);
+    };
+    loop();
+  }catch(e){}
+}
+function stopLevelMeter(){
+  cancelAnimationFrame(levelRAF);analyser=null;
+  try{if(audioCtx)audioCtx.close()}catch(e){}
+  audioCtx=null;
+  const w=$('levelWrap');if(w)w.hidden=true;
+}
+
+/* ================= DIAGNOSTICS ================= */
+async function runDiagnostics(){
+  const out=$('diagOut');
+  const rows=[];
+  const ok=t=>`<span style="color:var(--green)">✓</span> ${t}`;
+  const bad=t=>`<span style="color:var(--red)">✕</span> ${t}`;
+  const warn=t=>`<span style="color:#8A6A00">!</span> ${t}`;
+
+  rows.push(`Page origin: <b>${location.protocol}//${location.host||'(local file)'}</b>`);
+  rows.push(window.isSecureContext?ok('Secure context'):bad('Not a secure context — most mic features are restricted'));
+
+  if(location.protocol==='file:'){
+    rows.push(warn('You opened this as a local file. Chrome and Safari both restrict microphone and speech features on <b>file://</b> pages — this is the most common cause of recording failing.'));
+  }
+
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    rows.push(bad('navigator.mediaDevices.getUserMedia is unavailable in this context'));
+  } else {
+    rows.push(ok('getUserMedia API present'));
+    try{
+      const s=await navigator.mediaDevices.getUserMedia({audio:true});
+      const tracks=s.getAudioTracks();
+      rows.push(ok(`Mic access granted — ${tracks.length} audio track(s)`));
+      tracks.forEach(t=>rows.push(`&nbsp;&nbsp;• "${esc(t.label||'unnamed device')}" — state: <b>${t.readyState}</b>, enabled: <b>${t.enabled}</b>, muted: <b>${t.muted}</b>`));
+      if(tracks.some(t=>t.muted))rows.push(bad('A track reports muted:true — the OS or another app may be holding the mic'));
+
+      if(!window.MediaRecorder){
+        rows.push(bad('MediaRecorder is not supported in this browser'));
+      } else {
+        rows.push(ok('MediaRecorder supported'));
+        const supported=REC_MIMES.filter(m=>m!==''&&MediaRecorder.isTypeSupported(m));
+        rows.push(supported.length?ok('Supported formats: '+supported.join(', ')):bad('No tested audio format is supported'));
+        try{
+          const mime=pickMime();
+          const mr=mime?new MediaRecorder(s,{mimeType:mime}):new MediaRecorder(s);
+          let got=0,bytes=0;
+          mr.ondataavailable=e=>{if(e.data&&e.data.size){got++;bytes+=e.data.size}};
+          mr.start(200);
+          await new Promise(r=>setTimeout(r,1600));
+          await new Promise(r=>{mr.onstop=r;try{mr.stop()}catch(e){r()}});
+          rows.push(got&&bytes>0?ok(`Test recording captured ${got} chunk(s), ${bytes} bytes over ~1.5s`):bad('Test recording produced no audio data — the recorder started but captured nothing'));
+        }catch(e){
+          rows.push(bad('Could not start a test recording: '+esc(e.message||e.name)));
+        }
+      }
+      s.getTracks().forEach(t=>t.stop());
+    }catch(e){
+      rows.push(bad(`Mic access failed: ${esc(e.name||'')} ${esc(e.message||'')}`));
+    }
+  }
+
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  rows.push(SR?ok('SpeechRecognition API present (Chrome/Edge)'):bad('SpeechRecognition not available — no live transcript in this browser (Safari and Firefox lack it)'));
+  if(SR&&location.protocol==='file:'){
+    rows.push(warn('Even though the API exists, Chrome routes speech recognition through its servers and this usually fails on file:// pages.'));
+  }
+
+  out.innerHTML=`<div class="note" style="font-size:14px;line-height:1.75">${rows.map(r=>`<div>${r}</div>`).join('')}</div>`;
+}
+$('diagRun').onclick=()=>{$('diagOut').innerHTML='<p class="muted">Running…</p>';runDiagnostics()};
+$('keyBannerGo').onclick=()=>gotoPage('settings');
+
+/* ================= SPEAK ================= */
+let rec=null,mediaRec=null,chunks=[],finalText='',interim='',speakStart=0,lastFinalAt=0;
+function goSpeak(){
+  $('stepPrep').hidden=true;
+  const o=document.createElement('div');o.className='countin';
+  o.innerHTML=`<div class="e">Starting in</div><div class="n" id="cn">3</div><div class="t">${esc(cur.topic)}</div>`;
+  document.body.appendChild(o);
+  let n=3;
+  const iv=setInterval(()=>{n--;if(n>0){$('cn').textContent=n}else{clearInterval(iv);o.remove();startSpeech()}},1000);
+}
+async function startSpeech(){
+  finalText='';interim='';chunks=[];lastFinalAt=0;
+  $('speakTopic').textContent=cur.topic;
+  $('speakCue').textContent=LEVELS[S.profile.level].cue;
+  $('speakTarget').textContent='of '+fmt(cur.speechTarget);
+  $('liveTranscript').innerHTML='<span class="empty">Your words appear here as you speak.</span>';
+  $('fillerBig').textContent='0';$('fillerBig').classList.remove('hit');
+  $('fillerList').textContent='Nothing yet.';$('liveWords').textContent='0';$('liveWpm').textContent='—';
+  $('micNotice').innerHTML='';
+  mountAsk('askSpeakSlot');
+  $('stepSpeak').hidden=false;
+  speakStart=Date.now();tickSpeak();
+
+  const statusEl=$('recStatus');
+  try{
+    if(!micStream||!micStream.active||micStream.getAudioTracks().every(t=>t.readyState!=='live')){
+      micStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    }
+  }catch(e){
+    $('micNotice').innerHTML='<div class="notice">Recording failed — no mic access. Speak anyway; you can type the transcript at the end.</div>';
+    if(statusEl)statusEl.textContent='Not recording (no mic access)';
+  }
+  if(micStream){
+    if(!window.MediaRecorder){
+      $('micNotice').innerHTML='<div class="notice">This browser cannot save an audio clip, but speech-to-text and scoring still work.</div>';
+      if(statusEl)statusEl.textContent='Recording audio not supported here';
+    } else {
+      try{
+        const mime=pickMime();
+        mediaRec=mime?new MediaRecorder(micStream,{mimeType:mime}):new MediaRecorder(micStream);
+        mediaRec.ondataavailable=e=>{if(e.data && e.data.size>0)chunks.push(e.data)};
+        mediaRec.onerror=()=>{
+          $('micNotice').innerHTML='<div class="notice">The recorder hit an error partway through — your live transcript is still being captured.</div>';
+          if(statusEl)statusEl.textContent='Recording error';
+        };
+        mediaRec.start(250);
+        if(statusEl)statusEl.textContent='Recording';
+        startLevelMeter(micStream);
+      }catch(e){
+        $('micNotice').innerHTML='<div class="notice">Could not start the audio recorder on this browser (unsupported format). Speech-to-text will still work if available.</div>';
+        if(statusEl)statusEl.textContent='Recording not available';
+      }
+    }
+  }
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(SR){
+    try{
+      rec=new SR();rec.continuous=true;rec.interimResults=true;rec.lang='en-US';
+      rec.onresult=e=>{
+        interim='';
+        for(let i=e.resultIndex;i<e.results.length;i++){
+          const t=e.results[i][0].transcript;
+          if(e.results[i].isFinal){
+            const now=Date.now();
+            let sep=' ';
+            if(lastFinalAt){
+              const gap=now-lastFinalAt;
+              if(gap>1400)sep='. ';else if(gap>550)sep=', ';
+            }
+            const piece=t.trim();
+            finalText+=(finalText&&sep===' '&&!finalText.endsWith(' ')?' ':sep)+capIfNeeded(piece);
+            lastFinalAt=now;
+          } else interim+=t;
+        }
+        paintLive();
+      };
+      rec.onerror=ev=>{
+        const code=ev&&ev.error?ev.error:'unknown';
+        const map={
+          'not-allowed':'the browser blocked speech recognition (this is common on file:// pages)',
+          'service-not-allowed':'the browser blocked the speech service (common on file:// pages)',
+          'network':'the speech service could not be reached — Chrome sends audio to Google servers for this, which fails on file:// pages',
+          'no-speech':'no speech was detected',
+          'audio-capture':'no audio could be captured from the microphone'
+        };
+        $('micNotice').innerHTML=`<div class="notice">Live transcript stopped: ${esc(map[code]||code)}. Your audio is still being recorded — you can type the transcript after finishing, or see Settings → Mic &amp; recording check.</div>`;
+      };
+      rec.onend=()=>{if(!$('stepSpeak').hidden){try{rec.start()}catch(e){}}};
+      rec.start();
+    }catch(e){rec=null}
+  }
+}
+function capIfNeeded(s){
+  if(!s)return s;
+  const prev=finalText.trim();
+  if(!prev||/[.!?]\s*$/.test(prev)||prev.endsWith(', '))return s.charAt(0).toUpperCase()+s.slice(1);
+  return s;
+}
+function paintLive(){
+  const full=(finalText+' '+interim).trim();
+  $('liveTranscript').innerHTML=full?markFillers(finalText)+'<span class="interim">'+esc(interim)+'</span>':'<span class="empty">Your words appear here as you speak.</span>';
+  $('liveTranscript').scrollTop=$('liveTranscript').scrollHeight;
+  const {tally,total}=countFillers(finalText+' '+interim);
+  $('fillerBig').textContent=total;$('fillerBig').classList.toggle('hit',total>0);
+  $('fillerSub').textContent=total===1?'filler so far':'fillers so far';
+  const top=Object.entries(tally).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  $('fillerList').innerHTML=top.length?top.map(([w,c])=>`<div class="fl"><span>"${esc(w)}"</span><span>${c}</span></div>`).join(''):'Nothing yet.';
+  const n=wc(full),mins=(Date.now()-speakStart)/60000;
+  $('liveWords').textContent=n;$('liveWpm').textContent=mins>.15?Math.round(n/mins):'—';
+}
+function tickSpeak(){
+  if($('stepSpeak').hidden)return;
+  const el=(Date.now()-speakStart)/1000;
+  $('speakClock').textContent=fmt(el);
+  setArc($('speakDial'),el/cur.speechTarget,el>cur.speechTarget);
+  if(el>cur.speechTarget&&$('speakCue').dataset.w!=='1'){$('speakCue').dataset.w='1';$('speakCue').textContent='Time — land your closing line.'}
+  const statusEl=$('recStatus');
+  if(statusEl && mediaRec){
+    if(mediaRec.state==='recording')statusEl.textContent=`Recording · ${chunks.length} chunk${chunks.length===1?'':'s'} saved`;
+    else if(mediaRec.state==='paused')statusEl.textContent='Paused';
+  }
+  raf=requestAnimationFrame(tickSpeak);
+}
+$('stopSpeech').onclick=()=>{
+  cancelAnimationFrame(raf);
+  cur.spoken=Math.round((Date.now()-speakStart)/1000);
+  $('speakCue').dataset.w='';
+  try{if(rec){rec.onend=null;rec.stop()}}catch(e){}
+  const finish=()=>{
+    stopLevelMeter();
+    cur.audio=chunks.length?URL.createObjectURL(new Blob(chunks,{type:(mediaRec&&mediaRec.mimeType)||'audio/webm'})):null;
+    let text=(finalText+' '+interim).trim();
+    if(text && !/[.!?]$/.test(text)) text+='.';
+    if(wc(text)>=6){cur.transcript=text;$('stepSpeak').hidden=true;analyse()}
+    else{
+      $('stepSpeak').hidden=true;
+      $('rescueAudio').innerHTML=cur.audio?`<audio controls src="${cur.audio}"></audio>`:'<div class="notice">No audio was captured either — check mic permission before your next speech.</div>';
+      $('rescueText').value=text;$('stepRescue').hidden=false;
+    }
+  };
+  if(mediaRec&&mediaRec.state!=='inactive'){mediaRec.onstop=finish;try{mediaRec.stop()}catch(e){finish()}}
+  else finish();
+};
+$('rescueGo').onclick=()=>{
+  const t=$('rescueText').value.trim();
+  if(wc(t)<6){alert('Add a little more so there is something to analyse.');return}
+  cur.transcript=t;$('stepRescue').hidden=true;analyse();
+};
+$('rescueSkip').onclick=()=>{$('stepRescue').hidden=true;startDay()};
+
+/* ================= ANALYSIS ================= */
+const MSGS=['Listening back to your speech…','Counting the fillers…','Checking whether you stayed on topic…','Finding your one thing…'];
+async function analyse(){
+  $('stepLoading').hidden=false;
+  let i=0;$('loadMsg').textContent=MSGS[0];
+  const iv=setInterval(()=>{i=(i+1)%MSGS.length;$('loadMsg').textContent=MSGS[i]},2200);
+  const {tally,total}=countFillers(cur.transcript);
+  cur.words=wc(cur.transcript);cur.wpm=Math.round(cur.words/Math.max(.2,cur.spoken/60));
+  cur.fillers=total;cur.tally=tally;
+  let r=null;try{r=await askClaude()}catch(e){r=null}
+  if(!r)r=fallback();
+  if(!r.vocab||!r.vocab.word)r.vocab=localVocab();
+  clearInterval(iv);$('stepLoading').hidden=true;
+  cur.analysis=r;persist();renderReport();$('stepReport').hidden=false;
+}
+async function askClaude(){
+  const prompt=`You are a warm, exacting speech coach reviewing ONE impromptu speech. You give ONE piece of advice, never a list.
+
+TOPIC: "${cur.topic}"
+SUBJECT: ${DOMAINS[cur.domain]}
+LEVEL: ${LEVELS[S.profile.level].name}
+TARGET: ${cur.speechTarget}s. ACTUAL: ${cur.spoken}s. PREP USED: ${cur.prepUsed}s.
+PACE: ${cur.wpm} wpm over ${cur.words} words.
+KEYWORD FILLER COUNT: ${JSON.stringify(cur.tally)} (total ${cur.fillers}) — rough, verify against the transcript.
+ADVICE ALREADY GIVEN IN RECENT SESSIONS (do NOT repeat these — find a different angle, even if the old issue persists): ${JSON.stringify(recentHeadlines(5))}
+
+TRANSCRIPT (auto-transcribed with rough pause-based punctuation; ignore odd spelling, judge the speaking):
+"""${cur.transcript}"""
+
+Judge it as spoken impromptu speech at this level, not as writing. A beginner who holds 60 seconds on topic with a clear point deserves a good score. Honest, never harsh.
+
+Return ONLY valid JSON, no fences, no preamble:
+{"rating":<1-10, one decimal ok>,
+"scores":{"onTopic":<0-10>,"structure":<0-10>,"vocabulary":<0-10>,"sentences":<0-10>,"fluency":<0-10>},
+"summary":"<2 sentences: what this speech did and its strongest quality. Address them as 'you'.>",
+"assessment":"<2-3 sentences explaining WHY they got this rating, describing HOW they actually spoke (pacing, structure, clarity, filler pattern) — factual description of their performance, NOT advice or suggestions>",
+"notes":{"onTopic":"<one short sentence>","structure":"<one short sentence>","vocabulary":"<one short sentence>","sentences":"<one short sentence>","fluency":"<one short sentence>"},
+"takeaway":{"headline":"<max 7 words, imperative, memorable — the ONE fix>","why":"<2 sentences max, referencing something they actually said>","try":"<one concrete instruction for their very next speech>"},
+"vocab":{"word":"<one polished but ordinary word or phrase usable in daily conversation — not obscure, not academic>","pos":"<noun|verb|adjective|adverb|phrase>","meaning":"<short plain definition>","was":"<the exact plainer wording from the transcript it replaces>","use":"<one natural sentence they could say this week>"}}
+The vocab word MUST replace something genuinely present in the transcript — never leave it out.`;
+  const text=await callClaude(prompt,1100);
+  const clean=text.replace(/```json|```/g,'').trim();
+  const p=JSON.parse(clean.slice(clean.indexOf('{'),clean.lastIndexOf('}')+1));
+  if(!p.takeaway||!p.scores)throw new Error('shape');
+  return p;
+}
+function localVocab(){
+  for(const v of VOCAB_BANK){if(v.trig.test(cur.transcript))return {word:v.word,pos:v.pos,meaning:v.meaning,was:v.was,use:v.use};}
+  return {word:'concise',pos:'adjective',meaning:'saying exactly what you mean in fewer words',use:"Try to be more concise in your opening line."};
+}
+function recentHeadlines(n){
+  return S.sessions.slice(-(n||4)).map(s=>s.takeaway&&s.takeaway.headline).filter(Boolean);
+}
+function fallback(){
+  const onTime=1-Math.min(1,Math.abs(cur.spoken-cur.speechTarget)/cur.speechTarget);
+  const fpm=cur.fillers/Math.max(.2,cur.spoken/60);
+  const flu=Math.max(2,10-fpm*1.4),pace=(cur.wpm>=110&&cur.wpm<=165)?8:6;
+  const worst=Object.entries(cur.tally).sort((a,b)=>b[1]-a[1])[0];
+  const reason=S.apiKey?'the coaching model did not respond':'no API key is set yet (add one in Settings for full coaching)';
+  const over=cur.spoken-cur.speechTarget;
+  const t=cur.transcript||'';
+  const sentences=t.split(/[.!?]+/).map(s=>s.trim()).filter(Boolean);
+  const avgLen=sentences.length?Math.round(wc(t)/sentences.length):0;
+  const longest=sentences.reduce((a,s)=>Math.max(a,wc(s)),0);
+  const opensWeak=/^(so|um|uh|well|okay|basically|i think|my topic)/i.test(t.trim());
+  const hasBecause=/\b(because|since|the reason)\b/i.test(t);
+  const hasExample=/\b(for example|for instance|last week|once|one time|when i)\b/i.test(t);
+  const closesWeak=!/\b(so|therefore|that is why|in short|overall|which is why)\b[^.!?]*[.!?]\s*$/i.test(t);
+
+  /* candidate coaching angles, most-specific first */
+  const cands=[];
+  if(opensWeak)cands.push({headline:'Cut the throat-clearing opener',
+    why:`You opened with "${esc(t.trim().split(/\s+/).slice(0,4).join(' '))}…" — the speech really starts a beat later.`,
+    try:'Next time, begin with your actual position or a mini-scene. No warm-up words.'});
+  if(!hasExample)cands.push({headline:'Add one concrete example',
+    why:'You made your points in the abstract — nothing specific enough to picture.',
+    try:'Next speech: name one real moment, person, or number to anchor your main point.'});
+  if(!hasBecause)cands.push({headline:'Say the word "because" out loud',
+    why:'You stated positions but rarely connected them to a reason.',
+    try:'Force one sentence starting "I think this because…" into your next speech.'});
+  if(longest>45)cands.push({headline:'Break your longest sentence in two',
+    why:`One stretch ran about ${longest} words without landing.`,
+    try:'When you feel a sentence sprawling, stop at the comma and start fresh.'});
+  if(avgLen&&avgLen<8)cands.push({headline:'Let some sentences breathe longer',
+    why:`Your sentences averaged about ${avgLen} words — clipped and list-like.`,
+    try:'Next time, join two related short thoughts with "which means" or "and that is why".'});
+  if(closesWeak)cands.push({headline:'Land a real closing line',
+    why:'The speech stopped rather than concluded.',
+    try:'Save your last five seconds for one sentence starting "So…" that restates your point.'});
+  if(over>12)cands.push({headline:'Wrap up when the ring fills',
+    why:`You ran ${fmt(Math.abs(over))} past the target.`,
+    try:'Plan three beats only. When time hits, finish the sentence you are in and stop.'});
+  if(over<-12)cands.push({headline:'Use the full time you are given',
+    why:`You finished ${fmt(Math.abs(over))} early — there was room to develop the idea.`,
+    try:'Next time, add one "for example" after your main reason to fill the space honestly.'});
+  if(cur.wpm>175)cands.push({headline:'Slow down about ten percent',
+    why:`You ran at ${cur.wpm} words a minute, fast enough to blur.`,
+    try:'Take one full breath after your opening sentence before continuing.'});
+  if(cur.wpm&&cur.wpm<95)cands.push({headline:'Pick the pace up slightly',
+    why:`You ran at ${cur.wpm} words a minute, slow enough to lose momentum.`,
+    try:'Decide your first sentence during prep so you can start without hunting for it.'});
+  if(worst&&fpm>3)cands.push({headline:`Swap "${worst[0]}" for a pause`,
+    why:`"${worst[0]}" came up ${worst[1]} time${worst[1]>1?'s':''}. It fills a gap where a breath would do more.`,
+    try:'When you feel it coming, close your mouth and count one beat instead.'});
+  cands.push({headline:'Signpost your three beats',
+    why:'The ideas were there but arrived without markers, so they blurred together.',
+    try:'Next speech, say "first", "second", and "most importantly" out loud.'});
+  cands.push({headline:'State your position in sentence one',
+    why:'Your point became clear, but only partway through.',
+    try:'Open the next speech with a single flat claim before any explanation.'});
+
+  const recent=recentHeadlines(4);
+  const pick=cands.find(c=>!recent.includes(c.headline))||cands[0];
+
+  return {rating:Math.round((onTime*10*.3+flu*.4+pace*.3)*10)/10,
+    scores:{onTopic:7,structure:6,vocabulary:6,sentences:7,fluency:Math.round(flu)},
+    notes:{onTopic:'Estimate only — '+reason+'.',structure:'Estimate only.',vocabulary:'Estimate only.',sentences:`Average sentence ran about ${avgLen||'—'} words.`,fluency:`Based on ${cur.fillers} fillers across ${fmt(cur.spoken)}.`},
+    summary:`You spoke for ${fmt(cur.spoken)} against a ${fmt(cur.speechTarget)} target at ${cur.wpm} words a minute. This is a timing-and-structure estimate because ${reason}.`,
+    assessment:`Your pace landed at ${cur.wpm} words per minute with ${cur.fillers} filler${cur.fillers===1?'':'s'}, and your sentences averaged about ${avgLen||'—'} words. This score reflects timing, fillers and sentence shape only, since ${reason}.`,
+    takeaway:pick,
+    vocab:null};
+}
+function persist(){
+  const a=cur.analysis;
+  S.sessions.push({date:today(),at:Date.now(),topic:cur.topic,domain:cur.domain,level:S.profile.level,
+    prepPlanned:cur.prepPlanned,prepUsed:cur.prepUsed,target:cur.speechTarget,spoken:cur.spoken,
+    words:cur.words,wpm:cur.wpm,fillers:cur.fillers,rating:a.rating,scores:a.scores,takeaway:a.takeaway,transcript:cur.transcript});
+  if(a.vocab&&a.vocab.word)S.vocab.push({date:today(),...a.vocab});
+  saveState();paintStreakBadge();
+}
+
+/* ================= REPORT ================= */
+function renderReport(){
+  const a=cur.analysis;
+  $('repMeta').textContent=`${DOMAINS[cur.domain]} · ${fmt(cur.spoken)} spoken`;
+  $('repTopic').textContent=cur.topic;
+  $('repScore').innerHTML=`${a.rating}<em>/10</em>`;
+  $('repSummary').textContent=a.summary;
+  $('assessText').textContent=a.assessment||a.summary;
+  $('takeHead').textContent=a.takeaway.headline;
+  $('takeWhy').textContent=a.takeaway.why;
+  $('takeTry').textContent=a.takeaway.try;
+  const v=a.vocab;
+  $('vocabCard').hidden=!(v&&v.word);
+  if(v&&v.word){
+    $('vWord').textContent=v.word;$('vPos').textContent=v.pos||'';$('vMeaning').textContent=v.meaning||'';
+    $('vWas').textContent=v.was?`"${v.was}"`:'your usual phrasing';$('vNow').textContent=`"${v.word}"`;$('vUse').textContent=v.use||'';
+  }
+  const over=cur.spoken-cur.speechTarget,fpm=(cur.fillers/Math.max(.2,cur.spoken/60)).toFixed(1);
+  $('repStats').innerHTML=[
+    ['Spoken',fmt(cur.spoken),Math.abs(over)>15],
+    ['vs target',(over>=0?'+':'−')+fmt(Math.abs(over)),Math.abs(over)>15],
+    ['Pace',cur.wpm+' wpm',cur.wpm<100||cur.wpm>180],
+    ['Fillers',cur.fillers,cur.fillers>0],
+    ['Per minute',fpm,fpm>4],
+    ['Prep used',fmt(cur.prepUsed)+' / '+fmt(cur.prepPlanned||0),false]
+  ].map(([k,val,f])=>`<div class="stat"><div class="k">${k}</div><div class="v${f?' flag':''}">${val}</div></div>`).join('');
+  const L={onTopic:'On topic',structure:'Structure',vocabulary:'Vocabulary',sentences:'Sentences',fluency:'Fluency'};
+  const notes=a.notes||{};
+  $('repBars').innerHTML=Object.entries(L).map(([k,l])=>{
+    const n=a.scores[k]??0;
+    return `<div class="barrow"><div class="top"><span>${l}</span><span class="n">${n}/10</span></div>
+      <div class="t"><div class="v" style="width:0" data-w="${n*10}"></div></div>
+      <p class="note">${esc(notes[k]||'')}</p></div>`;
+  }).join('');
+  requestAnimationFrame(()=>document.querySelectorAll('#repBars .v').forEach(b=>b.style.width=b.dataset.w+'%'));
+  $('repTranscript').innerHTML=markFillers(cur.transcript);
+  $('repAudio').innerHTML=cur.audio?`<audio controls src="${cur.audio}"></audio><p class="muted" style="margin-top:6px">This clip only lives in this browser tab — download it if you want to keep it.</p>`:'<p class="muted">No audio saved for this one.</p>';
+  mountAsk('askReportSlot','✦ Ask about this speech',reportQuestions(a));
+}
+function reportQuestions(a){
+  const qs=[];
+  qs.push(`Why did I score ${a.scores&&a.scores.structure!=null?a.scores.structure:'this'} on structure?`);
+  if(cur.fillers>0)qs.push('How do I actually break the filler habit you flagged?');
+  qs.push(`Give me a stronger opening line for "${cur.topic.length>40?cur.topic.slice(0,40)+'…':cur.topic}"`);
+  qs.push('Rewrite my weakest sentence from this transcript');
+  qs.push('What structure would have suited this topic better?');
+  return qs.slice(0,4);
+}
+$('repDone').onclick=()=>{$('stepReport').hidden=true;startDay()};
+
+/* ================= PROGRESS ================= */
+function renderProgress(){
+  const n=S.sessions.length;
+  const avg=n?S.sessions.reduce((a,s)=>a+(s.rating||0),0)/n:0;
+  const last5=S.sessions.slice(-5),avg5=last5.length?last5.reduce((a,s)=>a+(s.rating||0),0)/last5.length:0;
+  const mins=S.sessions.reduce((a,s)=>a+(s.spoken||0),0)/60;
+  const fpm=n?S.sessions.reduce((a,s)=>a+s.fillers/Math.max(.2,s.spoken/60),0)/n:0;
+  $('progStats').innerHTML=[['Streak',streak()+' d'],['Sessions',n],['Avg rating',n?avg.toFixed(1):'—'],
+    ['Last 5',last5.length?avg5.toFixed(1):'—'],['Time spoken',mins.toFixed(0)+' min'],['Fillers / min',n?fpm.toFixed(1):'—']]
+    .map(([k,v])=>`<div class="stat"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+  $('progCharts').hidden=n<2;
+  if(n>1){
+    trend($('trendRating'),S.sessions.map(s=>s.rating||0),10,false);
+    trend($('trendFiller'),S.sessions.map(s=>s.fillers/Math.max(.2,s.spoken/60)),null,true);
+  }
+  $('vocabList').innerHTML=S.vocab.length?[...S.vocab].reverse().slice(0,40).map(v=>
+    `<div class="r"><b>${esc(v.word)}</b> <span class="muted">${esc(v.pos||'')}</span><div class="muted" style="font-size:14px;color:var(--ink-2)">${esc(v.meaning||'')}</div>
+     <div class="muted" style="font-size:13.5px">instead of "${esc(v.was||'')}"</div></div>`).join('')
+    :'<div class="r muted">Words land here after your first speech — each pulled from something you actually said.</div>';
+  $('histList').innerHTML=n?[...S.sessions].reverse().map(s=>
+    `<div class="r hrow"><span class="d">${s.date.slice(5)}</span><span>${esc(s.topic)}<br><span class="muted">${fmt(s.spoken)} · ${s.fillers} filler${s.fillers===1?'':'s'} · ${s.wpm} wpm</span></span><span class="sc">${s.rating}</span></div>`).join('')
+    :'<div class="r muted">Your first session will land here.</div>';
+}
+function trend(svg,vals,max,gold){
+  const W=600,H=130,p=14,hi=max??Math.max(4,Math.ceil(Math.max(...vals)+1));
+  const pts=vals.map((v,i)=>[vals.length===1?W/2:p+i*(W-p*2)/(vals.length-1),H-p-(v/hi)*(H-p*2)]);
+  svg.innerHTML=`<line class="grid" x1="0" y1="${H-p}" x2="${W}" y2="${H-p}"></line><line class="grid" x1="0" y1="${p}" x2="${W}" y2="${p}"></line>
+    <polyline class="ln${gold?' gold':''}" points="${pts.map(a=>a.join(',')).join(' ')}"></polyline>
+    ${pts.map(a=>`<circle class="pt" cx="${a[0]}" cy="${a[1]}" r="3.5"${gold?' stroke="#C4432E"':''}></circle>`).join('')}`;
+}
+
+/* ================= SETTINGS ================= */
+let sd={};
+function renderSettings(){
+  $('apiKeyInput').value=S.apiKey||'';
+  $('apiKeyStatus').innerHTML=S.apiKey?'<span class="pill">🔑 Key saved on this device</span>':'<span class="muted">No key saved yet — asking the coach and getting real scores won\'t work until you add one.</span>';
+  sd={level:S.profile.level,domains:[...S.profile.domains]};
+  const paint=()=>{
+    paintLevels($('setLevelOpts'),sd.level,k=>{sd.level=k;paint()});
+    paintDomains($('setDomainOpts'),sd.domains,k=>{sd.domains=sd.domains.includes(k)?sd.domains.filter(x=>x!==k):[...sd.domains,k];if(!sd.domains.length)sd.domains=[k];paint()});
+  };paint();
+}
+$('apiKeySave').onclick=()=>{
+  S.apiKey=$('apiKeyInput').value.trim();saveState();
+  const kb=$('keyBanner');if(kb)kb.hidden=!!S.apiKey;
+  $('apiKeyStatus').innerHTML=S.apiKey?'<span class="pill">🔑 Key saved on this device — scores will be fully coached from your next speech</span>':'<span class="muted">Key cleared.</span>';
+};
+$('setSave').onclick=()=>{S.profile.level=sd.level;S.profile.domains=sd.domains;saveState();paintStreakBadge();gotoPage('practice');startDay()};
+$('setReset').onclick=()=>{
+  if(!confirm('Erase every session, rating, word, and your API key? This cannot be undone.'))return;
+  S=blank();try{localStorage.removeItem(KEY)}catch(e){}
+  draft={level:null,domains:[]};refreshSetup();paintTabs();paintStreakBadge();
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  $('p-setup').classList.add('on');
+};
+
+/* ================= BOOT ================= */
+(function(){
+  S=loadState();
+  paintTabs();paintStreakBadge();
+  if(location.protocol==='file:'){
+    const b=document.createElement('div');
+    b.className='notice';
+    b.style.cssText='margin:12px 0 0';
+    b.innerHTML='<b>Heads up:</b> this page is open as a local file. Chrome and Safari restrict microphone recording and live transcription on <b>file://</b> pages, which is the usual reason recording silently fails. Settings → <b>Mic &amp; recording check</b> will confirm, and shows how to fix it.';
+    document.querySelector('.wrap').insertBefore(b,document.querySelector('.topnav').nextSibling);
+  }
+  if(S.profile){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+    $('p-practice').classList.add('on');
+    $('tabs').querySelectorAll('.tabbtn').forEach(b=>b.classList.toggle('active',b.dataset.p==='practice'));
+    startDay();
+  } else {
+    refreshSetup();
+  }
+})();
+</script>
